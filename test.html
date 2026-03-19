@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DN4 Dahili Bilimler Quiz</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .quiz-container { background: var(--card); width: 100%; max-width: 600px; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .header { border-bottom: 2px solid #e2e8f0; margin-bottom: 1.5rem; padding-bottom: 1rem; }
+        .question-text { font-size: 1.1rem; font-weight: 600; line-height: 1.6; margin-bottom: 1.5rem; }
+        .options-container { display: flex; flex-direction: column; gap: 0.8rem; }
+        .option { padding: 1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .option:hover { border-color: var(--primary); background: #eff6ff; }
+        .option.correct { border-color: #22c55e; background: #f0fdf4; }
+        .option.wrong { border-color: #ef4444; background: #fef2f2; }
+        .footer { margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        button { background: var(--primary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+        #result-screen { text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container" id="quiz">
+    <div class="header">
+        <span id="progress">Soru: 1 / 100</span>
+    </div>
+    <div id="question-area">
+        <div class="question-text" id="question">Soru yükleniyor...</div>
+        <div class="options-container" id="options"></div>
+    </div>
+    <div class="footer">
+        <div id="score-display">Doğru: 0</div>
+        <button id="next-btn" onclick="nextQuestion()" disabled>Sonraki Soru</button>
+    </div>
+</div>
+
+<div class="quiz-container" id="result-screen">
+    <h2>Test Bitti!</h2>
+    <p id="final-score" style="font-size: 1.5rem;"></p>
+    <button onclick="location.reload()">Tekrar Başla</button>
+</div>
+
+<script>
+    // PDF'den çıkarılan sorular (Tüm doğru cevaplar A şıkkıdır )
+    const questions = [
+        {
+            q: "Aşağıdakilerden hangisi hipokalsemide görülen belirti ve bulgular arasında değildir?",
+            a: ["QT kısalması", "Parmaklarda ve dudak çevresinde karıncalanma", "Kaba ve kuru cilt", "Subkapsüler katarakt", "Chvostek bulgusu"]
+        },
+        {
+            q: "Metforminle ilgili olarak aşağıdakilerden hangisi yanlıştır?",
+            a: ["Kronik böbrek hastalığının tüm evrelerinde kontrendikedir.", "Sınıf 4 kalp yetmezliğinde kontrendikedir.", "En sık yan etkisi GİS irritasyonudur.", "B12 eksikliğine neden olabilir.", "Cerrahi öncesi kesilmelidir."]
+        },
+        {
+            q: "Aşağıdaki çevresel maruziyetlerden hangisi HCC gelişimiyle en güçlü şekilde ilişkilidir?",
+            a: ["Aflatoksin B1", "Sigara", "Alkol", "Pestisitler", "Nitratlar"]
+        },
+        {
+            q: "EGFR ekzon 19 delesyonu saptanan metastatik akciğer adenokarsinomunda ilk basamak en uygun tedavi?",
+            a: ["Osimertinib", "Lorlatinib", "Brigatinib", "Crizotinib", "Platin bazlı kemoterapi"]
+        },
+        {
+            q: "Aşağıdakilerden hangisi Vaskülo-Behçet hastalarında damar tutulumu şekli değildir?",
+            a: ["Mikroanevrizma", "Alt ekstremite DVT", "Vena cava Süperior sendromu", "Pulmoner arter anevrizması", "Süperfisiyal tromboflebit"]
+        },
+        {
+            q: "Aşağıdakilerden hangisi hepato-splenomegali etiyolojilerinden biri değildir?",
+            a: ["Kronik pankreatit", "Hematolojik maligniteler", "Kronik karaciğer hastalıkları", "Enfeksiyonlar", "Kronik miyeloproliferatif hastalıklar"]
+        },
+        {
+            q: "İstemsiz kilo kaybı olan bir hastada hangisi ilk basamak tetkiklerden biri değildir?",
+            a: ["Tümör belirteçleri", "Sedimantasyon veya CRP", "TSH", "Karaciğer ve böbrek fonksiyon testleri", "Tam kan sayımı"]
+        },
+        {
+            q: "Fizik muayenede klepotaj varlığı ne düşündürür?",
+            a: ["Pilor obstruksiyonu", "Akut kolesistit", "Gastik Ülser", "Duodenal Ülser", "Pankreatit"]
+        }
+        // ... Diğer soruları aynı formatta buraya ekleyebilirsin.
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+    let answered = false;
+
+    function loadQuestion() {
+        answered = false;
+        const q = questions[currentIdx];
+        document.getElementById("question").innerText = q.q;
+        document.getElementById("progress").innerText = `Soru: ${currentIdx + 1} / ${questions.length}`;
+        document.getElementById("next-btn").disabled = true;
+        
+        const optionsDiv = document.getElementById("options");
+        optionsDiv.innerHTML = "";
+        
+        // Şıkları göster (PDF'e göre her zaman 0. index yani A şıkkı doğru )
+        q.a.forEach((opt, index) => {
+            const div = document.createElement("div");
+            div.className = "option";
+            div.innerText = opt;
+            div.onclick = () => checkAnswer(index, div);
+            optionsDiv.appendChild(div);
+        });
+    }
+
+    function checkAnswer(selectedIdx, element) {
+        if(answered) return;
+        answered = true;
+        
+        // A şıkkı (0. index) her zaman doğrudur 
+        if(selectedIdx === 0) {
+            element.classList.add("correct");
+            score++;
+            document.getElementById("score-display").innerText = `Doğru: ${score}`;
+        } else {
+            element.classList.add("wrong");
+            document.getElementById("options").children[0].classList.add("correct");
+        }
+        
+        document.getElementById("next-btn").disabled = false;
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if(currentIdx < questions.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById("quiz").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+        document.getElementById("final-score").innerText = `${questions.length} sorudan ${score} tanesini doğru bildiniz.`;
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

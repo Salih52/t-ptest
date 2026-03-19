@@ -3,146 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DN4 Dahili Bilimler Quiz</title>
+    <title>DN4 Dahili Bilimler Pro Quiz</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
+            --primary: #2563eb; --primary-dark: #1e40af;
+            --bg: #f1f5f9; --card: #ffffff;
+            --text: #0f172a; --border: #e2e8f0;
+            --success: #22c55e; --error: #ef4444;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; margin: 0; }
-        .quiz-container { background: var(--card); width: 100%; max-width: 600px; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .header { border-bottom: 2px solid #e2e8f0; margin-bottom: 1.5rem; padding-bottom: 1rem; }
-        .question-text { font-size: 1.1rem; font-weight: 600; line-height: 1.6; margin-bottom: 1.5rem; }
-        .options-container { display: flex; flex-direction: column; gap: 0.8rem; }
-        .option { padding: 1rem; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .option:hover { border-color: var(--primary); background: #eff6ff; }
-        .option.correct { border-color: #22c55e; background: #f0fdf4; }
-        .option.wrong { border-color: #ef4444; background: #fef2f2; }
-        .footer { margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; }
-        button { background: var(--primary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
-        button:disabled { background: #cbd5e1; cursor: not-allowed; }
-        #result-screen { text-align: center; display: none; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        
+        /* Yan Menü (Soru Listesi) */
+        .sidebar { width: 280px; background: var(--card); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 1rem; }
+        .sidebar h3 { margin-top: 0; font-size: 1.2rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--bg); }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; padding-right: 5px; }
+        .q-badge { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+        .q-badge.active { border-color: var(--primary); background: #eff6ff; font-weight: bold; }
+        .q-badge.answered { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Ana İçerik Alanı */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 2rem; }
+        .quiz-card { background: var(--card); max-width: 800px; margin: 0 auto; width: 100%; padding: 2.5rem; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        
+        .question-text { font-size: 1.25rem; font-weight: 600; line-height: 1.5; margin-bottom: 2rem; color: #1e293b; }
+        .options-container { display: flex; flex-direction: column; gap: 1rem; }
+        .option { padding: 1.2rem; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: 0.3s; position: relative; }
+        .option:hover { border-color: var(--primary); background: #f8fafc; }
+        .option.selected { border-color: var(--primary); background: #eff6ff; }
+        .option.correct { border-color: var(--success); background: #f0fdf4; color: #166534; }
+        .option.wrong { border-color: var(--error); background: #fef2f2; color: #991b1b; }
+
+        .nav-controls { margin-top: 2.5rem; display: flex; justify-content: space-between; gap: 1rem; }
+        button { padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; border: none; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: #e2e8f0; color: #475569; }
+        .btn-finish { background: #dc2626; color: white; }
+
+        /* Sonuç Ekranı */
+        #result-screen { display: none; padding-bottom: 5rem; }
+        .review-item { margin-bottom: 2rem; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); background: white; }
+        
+        @media (max-width: 768px) {
+            body { flex-direction: column; height: auto; overflow: auto; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 200px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="quiz-container" id="quiz">
-    <div class="header">
-        <span id="progress">Soru: 1 / 100</span>
-    </div>
-    <div id="question-area">
-        <div class="question-text" id="question">Soru yükleniyor...</div>
-        <div class="options-container" id="options"></div>
-    </div>
-    <div class="footer">
-        <div id="score-display">Doğru: 0</div>
-        <button id="next-btn" onclick="nextQuestion()" disabled>Sonraki Soru</button>
+<div class="sidebar">
+    <h3>Sorular</h3>
+    <div class="question-grid" id="q-grid"></div>
+    <div style="margin-top: auto; padding-top: 1rem;">
+        <button class="btn-finish" style="width: 100%" onclick="finishQuiz()">Sınavı Bitir</button>
     </div>
 </div>
 
-<div class="quiz-container" id="result-screen">
-    <h2>Test Bitti!</h2>
-    <p id="final-score" style="font-size: 1.5rem;"></p>
-    <button onclick="location.reload()">Tekrar Başla</button>
+<div class="main-content" id="quiz-area">
+    <div class="quiz-card">
+        <div id="progress-text" style="color: #64748b; font-size: 0.9rem; margin-bottom: 1rem;">Soru 1 / 100</div>
+        <div class="question-text" id="question">Soru yükleniyor...</div>
+        <div class="options-container" id="options"></div>
+        
+        <div class="nav-controls">
+            <button class="btn-secondary" id="prev-btn" onclick="prevQuestion()">Geri</button>
+            <button class="btn-primary" id="next-btn" onclick="nextQuestion()">Sonraki</button>
+        </div>
+    </div>
+</div>
+
+<div class="main-content" id="result-screen">
+    <div class="quiz-card" style="max-width: 900px;">
+        <h2 style="text-align: center">Sınav Sonucu</h2>
+        <div id="score-summary" style="text-align: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 2rem;"></div>
+        <div id="review-list"></div>
+        <button class="btn-primary" style="width: 100%; margin-top: 2rem;" onclick="location.reload()">Sınavı Yeniden Başlat</button>
+    </div>
 </div>
 
 <script>
-    // PDF'den çıkarılan sorular (Tüm doğru cevaplar A şıkkıdır )
+    // PDF'den gelen sorular (A şıkkı her zaman doğru kabul edilmiştir )
     const questions = [
-        {
-            q: "Aşağıdakilerden hangisi hipokalsemide görülen belirti ve bulgular arasında değildir?",
-            a: ["QT kısalması", "Parmaklarda ve dudak çevresinde karıncalanma", "Kaba ve kuru cilt", "Subkapsüler katarakt", "Chvostek bulgusu"]
-        },
-        {
-            q: "Metforminle ilgili olarak aşağıdakilerden hangisi yanlıştır?",
-            a: ["Kronik böbrek hastalığının tüm evrelerinde kontrendikedir.", "Sınıf 4 kalp yetmezliğinde kontrendikedir.", "En sık yan etkisi GİS irritasyonudur.", "B12 eksikliğine neden olabilir.", "Cerrahi öncesi kesilmelidir."]
-        },
-        {
-            q: "Aşağıdaki çevresel maruziyetlerden hangisi HCC gelişimiyle en güçlü şekilde ilişkilidir?",
-            a: ["Aflatoksin B1", "Sigara", "Alkol", "Pestisitler", "Nitratlar"]
-        },
-        {
-            q: "EGFR ekzon 19 delesyonu saptanan metastatik akciğer adenokarsinomunda ilk basamak en uygun tedavi?",
-            a: ["Osimertinib", "Lorlatinib", "Brigatinib", "Crizotinib", "Platin bazlı kemoterapi"]
-        },
-        {
-            q: "Aşağıdakilerden hangisi Vaskülo-Behçet hastalarında damar tutulumu şekli değildir?",
-            a: ["Mikroanevrizma", "Alt ekstremite DVT", "Vena cava Süperior sendromu", "Pulmoner arter anevrizması", "Süperfisiyal tromboflebit"]
-        },
-        {
-            q: "Aşağıdakilerden hangisi hepato-splenomegali etiyolojilerinden biri değildir?",
-            a: ["Kronik pankreatit", "Hematolojik maligniteler", "Kronik karaciğer hastalıkları", "Enfeksiyonlar", "Kronik miyeloproliferatif hastalıklar"]
-        },
-        {
-            q: "İstemsiz kilo kaybı olan bir hastada hangisi ilk basamak tetkiklerden biri değildir?",
-            a: ["Tümör belirteçleri", "Sedimantasyon veya CRP", "TSH", "Karaciğer ve böbrek fonksiyon testleri", "Tam kan sayımı"]
-        },
-        {
-            q: "Fizik muayenede klepotaj varlığı ne düşündürür?",
-            a: ["Pilor obstruksiyonu", "Akut kolesistit", "Gastik Ülser", "Duodenal Ülser", "Pankreatit"]
-        }
-        // ... Diğer soruları aynı formatta buraya ekleyebilirsin.
+        { q: "Aşağıdakilerden hangisi hipokalsemide görülen belirti ve bulgular arasında değildir?", a: ["QT kısalması", "Parmaklarda ve dudak çevresinde karıncalanma", "Kaba ve kuru cilt", "Subkapsüler katarakt", "Chvostek bulgusu"] },
+        { q: "Metforminle ilgili olarak aşağıdakilerden hangisi yanlıştır?", a: ["Kronik böbrek hastalığının tüm evrelerinde kontrendikedir.", "Sınıf 4 kalp yetmezliğinde kontrendikedir.", "En sık yan etkisi GİS irritasyonudur.", "B12 eksikliğine neden olabilir.", "Cerrahi öncesi kesilmelidir."] },
+        { q: "Aşağıdaki çevresel maruziyetlerden hangisi HCC gelişimiyle en güçlü şekilde ilişkilidir?", a: ["Aflatoksin B1", "Sigara", "Alkol", "Pestisitler", "Nitratlar"] },
+        { q: "EGFR ekzon 19 delesyonu saptanan metastatik akciğer adenokarsinomunda ilk basamak en uygun tedavi?", a: ["Osimertinib", "Lorlatinib", "Brigatinib", "Crizotinib", "Platin bazlı kemoterapi"] },
+        { q: "Aşağıdakilerden hangisi Vaskülo-Behçet hastalarında damar tutulumu şekli değildir?", a: ["Mikroanevrizma", "Alt ekstremite DVT", "Vena cava Süperior sendromu", "Pulmoner arter anevrizması", "Süperfisiyal tromboflebit"] },
+        { q: "Aşağıdakilerden hangisi hepato-splenomegali etiyolojilerinden biri değildir?", a: ["Kronik pankreatit", "Hematolojik maligniteler", "Kronik karaciğer hastalıkları", "Enfeksiyonlar", "Kronik miyeloproliferatif hastalıklar"] },
+        { q: "İstemsiz kilo kaybı olan bir hastada hangisi ilk basamak tetkiklerden biri değildir?", a: ["Tümör belirteçleri", "Sedimantasyon veya CRP", "TSH", "Karaciğer ve böbrek fonksiyon testleri", "Tam kan sayımı"] },
+        { q: "Fizik muayenede klepotaj varlığı ne düşündürür?", a: ["Pilor obstruksiyonu", "Akut kolesistit", "Gastik Ülser", "Duodenal Ülser", "Pankreatit"] }
     ];
 
     let currentIdx = 0;
-    let score = 0;
-    let answered = false;
+    let userAnswers = new Array(questions.length).fill(null);
+
+    function init() {
+        renderSidebar();
+        loadQuestion();
+    }
+
+    function renderSidebar() {
+        const grid = document.getElementById("q-grid");
+        grid.innerHTML = "";
+        questions.forEach((_, i) => {
+            const badge = document.createElement("div");
+            badge.className = `q-badge ${i === currentIdx ? 'active' : ''} ${userAnswers[i] !== null ? 'answered' : ''}`;
+            badge.innerText = i + 1;
+            badge.onclick = () => jumpToQuestion(i);
+            grid.appendChild(badge);
+        });
+    }
 
     function loadQuestion() {
-        answered = false;
         const q = questions[currentIdx];
         document.getElementById("question").innerText = q.q;
-        document.getElementById("progress").innerText = `Soru: ${currentIdx + 1} / ${questions.length}`;
-        document.getElementById("next-btn").disabled = true;
+        document.getElementById("progress-text").innerText = `Soru ${currentIdx + 1} / ${questions.length}`;
+        document.getElementById("prev-btn").disabled = currentIdx === 0;
         
         const optionsDiv = document.getElementById("options");
         optionsDiv.innerHTML = "";
         
-        // Şıkları göster (PDF'e göre her zaman 0. index yani A şıkkı doğru )
         q.a.forEach((opt, index) => {
             const div = document.createElement("div");
-            div.className = "option";
-            div.innerText = opt;
-            div.onclick = () => checkAnswer(index, div);
+            div.className = `option ${userAnswers[currentIdx] === index ? 'selected' : ''}`;
+            div.innerText = `${String.fromCharCode(65 + index)}) ${opt}`;
+            div.onclick = () => selectOption(index);
             optionsDiv.appendChild(div);
         });
+        renderSidebar();
     }
 
-    function checkAnswer(selectedIdx, element) {
-        if(answered) return;
-        answered = true;
-        
-        // A şıkkı (0. index) her zaman doğrudur 
-        if(selectedIdx === 0) {
-            element.classList.add("correct");
-            score++;
-            document.getElementById("score-display").innerText = `Doğru: ${score}`;
-        } else {
-            element.classList.add("wrong");
-            document.getElementById("options").children[0].classList.add("correct");
-        }
-        
-        document.getElementById("next-btn").disabled = false;
+    function selectOption(idx) {
+        userAnswers[currentIdx] = idx;
+        loadQuestion();
     }
 
     function nextQuestion() {
-        currentIdx++;
-        if(currentIdx < questions.length) {
+        if (currentIdx < questions.length - 1) {
+            currentIdx++;
             loadQuestion();
-        } else {
-            showResults();
         }
     }
 
-    function showResults() {
-        document.getElementById("quiz").style.display = "none";
-        document.getElementById("result-screen").style.display = "block";
-        document.getElementById("final-score").innerText = `${questions.length} sorudan ${score} tanesini doğru bildiniz.`;
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            loadQuestion();
+        }
     }
 
-    loadQuestion();
+    function jumpToQuestion(i) {
+        currentIdx = i;
+        loadQuestion();
+    }
+
+    function finishQuiz() {
+        if(!confirm("Sınavı bitirmek istediğinize emin misiniz?")) return;
+        
+        document.getElementById("quiz-area").style.display = "none";
+        document.querySelector(".sidebar").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+        
+        let correctCount = 0;
+        const reviewList = document.getElementById("review-list");
+        reviewList.innerHTML = "";
+
+        questions.forEach((q, i) => {
+            const isCorrect = userAnswers[i] === 0; // A şıkkı (0) daima doğru 
+            if(isCorrect) correctCount++;
+
+            const item = document.createElement("div");
+            item.className = "review-item";
+            item.style.borderLeft = `5px solid ${isCorrect ? 'var(--success)' : 'var(--error)'}`;
+            
+            item.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 0.5rem;">Soru ${i + 1}: ${q.q}</div>
+                <div style="color: ${isCorrect ? 'var(--success)' : 'var(--error)'}">
+                    Senin Cevabın: ${userAnswers[i] !== null ? q.a[userAnswers[i]] : 'Boş Bırakıldı'}
+                </div>
+                ${!isCorrect ? `<div style="color: var(--success); font-weight: bold;">Doğru Cevap: ${q.a[0]}</div>` : ''}
+            `;
+            reviewList.appendChild(item);
+        });
+
+        document.getElementById("score-summary").innerText = `Skor: ${correctCount} / ${questions.length}`;
+    }
+
+    init();
 </script>
 
 </body>

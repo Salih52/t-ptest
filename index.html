@@ -76,6 +76,7 @@
             overflow-y: auto; 
             padding-bottom: 20px; 
             flex: 1; 
+            align-content: start; /* EKLENEN KISIM: Dikey esnemeyi önler ve kutuları yukarı yaslar */
         }
         .q-badge {
             width: 36px;
@@ -104,8 +105,11 @@
             .sidebar-content { width: 100%; box-shadow: none; padding: 1.5rem; }
             .main-container { flex: 1; padding: 2rem; overflow-y: auto; display: flex; align-items: center; justify-content: center; }
             .quiz-card { max-width: 800px; width: 100%; padding: 2rem; margin-bottom: 0;}
-            /* Desktop'ta ızgarayı biraz daha genişletebiliriz */
-            #q-grid { grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 10px; }
+            #q-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); 
+                gap: 10px; 
+                align-content: start; /* Desktop için de dikey esnemeyi önleyelim */
+            }
             .q-badge { width: 40px; height: 40px; }
             .btn-finish { margin-top: auto; }
             .close-menu-btn { display: none; }

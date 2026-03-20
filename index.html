@@ -784,18 +784,31 @@
     }
 ];
 
+   Harika fikir! Soruların sırasını da her açılışta değiştirmek, ezberi önleyip tam bir gerçek sınav simülasyonu yaratacaktır.
+
+Bunun için init() fonksiyonumuzun içine, şıkları karıştırdıktan hemen sonra soruları da karıştıran bir döngü daha ekledim.
+
+Aşağıdaki güncellenmiş <script> kodunu alıp seninkiyle değiştirebilirsin (yine en üstteki kendi 100 soruluk questions dizini korumayı unutma):
+
+HTML
+<script>
+    // Buraya kendi 100 soruluk dizini yapıştıracaksın
+    const questions = [
+        { q: "Aşağıdakilerden hangisi Granülomatöz Polianjitis için doğru değildir?", a: ["Hastalarda akut süpüratif otitis media veya ciddi kronik otitis media ve karışık tipte iletimsel işitme kaybı görülebilirken, sensörinöral işitme kaybının ortaya çıkması beklenmez.", "Hastalar sıklıkla Staphylococcus aureus taşıyıcısıdır bu da relapslara neden olur.", "Laringeal ve trakeal mukozanın kronik inflamasyonu ses kısıklığına ve subglottik stenoza yol açabilir.", "Romatoid faktör olguların yarısına yakınında pozitif olabilir.", "Dilin lateral taraflarında ağrılı ülserler ve dişetine ‘’çilek’’ görünümü veren dişeti inflamasyonları görülebilir."] },
+        { q: "Aşağıdakilerden hangisi Romatoid artrit için doğru değildir?", a: ["Romatoid artrit hastalarında yüksek şeker düzeyinin eşlik ettiği eksüdatif plevral efüzyon gözlenir.", "Raynaud fenomeni romatoid artrit hastalarının yaklaşık %5-10 arasında mevcuttur ve hastalığın prognozunun kötü olabileceğine işaret edebilir.", "Romatoid nodüllerin varlığı, hastalığın seropozitif olduğunu ve prognozunun kötü olacağını gösterir.", "Piyoderma gangrenosum ve sweet sendromu romatoid artrit hastalarında görülebilen nötrofilik dermatozlardır.", "Romatoid artrit hastalarında odontoid prosesin medulla oblangataya subluksasyonu ani ölüme yol açabilir."] }
+        /* ... DİĞER SORULAR ... */
+    ];
+
     let currentIdx = 0;
     let quizFinished = false;
-    let quizData = []; // Şıkları karıştırılmış halini tutacağımız dizi
+    let quizData = []; 
     let userAnswers = []; 
 
     function init() {
-        // Sınav başlarken şıkları karıştır (Fisher-Yates Shuffle)
+        // 1. Önce her sorunun kendi içindeki şıklarını karıştır
         quizData = questions.map(q => {
-            // Index 0'ın doğru cevap olduğunu işaretle
             let options = q.a.map((opt, index) => ({ text: opt, isCorrect: index === 0 }));
             
-            // Şıkları rastgele yer değiştir
             for (let i = options.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [options[i], options[j]] = [options[j], options[i]];
@@ -803,6 +816,12 @@
             
             return { q: q.q, options: options };
         });
+
+        // 2. ŞİMDİ EKLENEN KISIM: Soruların kendi sırasını (1'den 100'e) komple karıştır
+        for (let i = quizData.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [quizData[i], quizData[j]] = [quizData[j], quizData[i]];
+        }
 
         userAnswers = new Array(quizData.length).fill(null);
         renderSidebar();
@@ -833,7 +852,7 @@
         if(quizFinished) return;
 
         const qData = quizData[currentIdx];
-        document.getElementById("question").innerHTML = qData.q; // <br> etiketleri varsa düzgün çalışması için innerHTML
+        document.getElementById("question").innerHTML = qData.q; 
 
         const progressText = `Soru ${currentIdx + 1} / ${quizData.length}`;
         document.getElementById("mobile-progress").innerText = progressText;
@@ -848,14 +867,13 @@
             const div = document.createElement("div");
             let className = "option";
 
-            // Soru cevaplandıysa renklendirme yap
             if (hasAnswered) {
                 if (opt.isCorrect) {
-                    className += " correct"; // Doğru cevabı her zaman yeşil yap
+                    className += " correct"; 
                 } else if (userAnswers[currentIdx] === index) {
-                    className += " wrong"; // Kullanıcının seçtiği yanlış cevabı kırmızı yap
+                    className += " wrong"; 
                 }
-                div.style.cursor = "default"; // Tıklanabilir imlecini kaldır
+                div.style.cursor = "default"; 
             } else {
                 div.onclick = () => selectOption(index);
             }
@@ -873,9 +891,9 @@
     }
 
     function selectOption(idx) {
-        if (userAnswers[currentIdx] !== null) return; // Zaten cevaplandıysa tıklamayı engelle
+        if (userAnswers[currentIdx] !== null) return; 
         userAnswers[currentIdx] = idx;
-        loadQuestion(); // Renkleri göstermek için soruyu tekrar yükle
+        loadQuestion(); 
     }
 
     function nextQuestion() {
@@ -921,7 +939,6 @@
             item.className = "review-item";
             item.style.borderLeft = `4px solid ${isCorrect ? 'var(--success)' : 'var(--error)'}`;
 
-            // Karıştırılmış şıklardaki asıl doğru cevabı bul
             const correctOptIdx = qData.options.findIndex(o => o.isCorrect);
             
             let selectedText = "Boş Bırakıldı";

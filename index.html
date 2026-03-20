@@ -1,52 +1,279 @@
-/* Sidebar ve Grid İyileştirmeleri */
-.sidebar-content {
-    width: 85%; /* Mobilde biraz daha daraltıldı */
-    max-width: 300px;
-    height: 100%;
-    background: var(--card);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DN4 Pro Quiz (Mobil Uyumlu)</title>
+    <style>
+        /* Mobile-First Temel Stiller */
+        :root {
+            --primary: #2563eb; --primary-dark: #1e40af;
+            --bg: #f8fafc; --card: #ffffff;
+            --text: #0f172a; --text-light: #64748b;
+            --border: #e2e8f0; --success: #22c55e;
+            --error: #ef4444; --header-height: 60px;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
 
-.question-grid {
-    display: grid;
-    /* auto-fill sayesinde butonlar büyümez, yan yana kaç tane sığarsa o kadar dizilir */
-    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); 
-    gap: 8px;
-    overflow-y: auto;
-    padding: 10px 5px;
-    align-content: start; /* Butonları yukarı yaslar */
-}
+        /* Mobil Header */
+        .mobile-header {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+            background: var(--card); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1rem; z-index: 100;
+        }
+        .mobile-header h1 { font-size: 1.1rem; margin: 0; color: var(--text); }
+        .menu-btn { background: none; border: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; padding: 5px 10px; }
 
-.q-badge {
-    width: 40px; /* Sabit genişlik */
-    height: 40px; /* Sabit yükseklik */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: 0.2s;
-    background: white;
-    margin: 0 auto; /* Grid hücresi içinde ortalar */
-}
+        /* Ana İçerik Alanı */
+        .main-container { padding: calc(var(--header-height) + 1rem) 1rem 1rem; }
+        .quiz-card { background: var(--card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 2rem; }
 
-/* Masaüstü Görünümü İçin Sabitleme */
-@media (min-width: 992px) {
-    .sidebar {
-        width: 260px; /* Sabit genişlik */
-        position: sticky;
-        top: 0;
-        height: 100vh;
+        /* Soru ve Şıklar */
+        .question-text { font-size: 1.1rem; font-weight: 600; line-height: 1.5; margin-bottom: 1.5rem; color: #1e293b; }
+        .options-container { display: flex; flex-direction: column; gap: 0.8rem; }
+        .option {
+            padding: 1rem; border: 2px solid var(--border); border-radius: 10px;
+            cursor: pointer; transition: 0.2s; position: relative;
+            font-size: 0.95rem; line-height: 1.4;
+        }
+        .option:active { background: #f1f5f9; } /* Dokunma efekti */
+        .option.selected { border-color: var(--primary); background: #eff6ff; }
+        .option.correct { border-color: var(--success) !important; background: #f0fdf4 !important; color: #166534; font-weight: 500;}
+        .option.wrong { border-color: var(--error) !important; background: #fef2f2 !important; color: #991b1b; }
+
+        /* Navigasyon Butonları */
+        .nav-controls { margin-top: 2rem; display: flex; justify-content: space-between; gap: 10px; }
+        button { padding: 0.7rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; border: none; font-size: 0.95rem; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; flex: 1; text-align: center;}
+        .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+        .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .btn-secondary { background: #e2e8f0; color: #475569; }
+        .btn-finish { background: #dc2626; color: white; width: 100%; margin-top: 20px;}
+
+        /* Mobil Navigasyon Menüsü (Drawer) */
+        .sidebar {
+            position: fixed; top: 0; left: -100%; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); z-index: 200;
+            transition: 0.3s; opacity: 0; visibility: hidden;
+        }
+        .sidebar.open { left: 0; opacity: 1; visibility: visible; }
+        .sidebar-content {
+            width: 80%; max-width: 320px; height: 100%;
+            background: var(--card); padding: 1rem;
+            display: flex; flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar h3 { font-size: 1.1rem; margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--bg); display: flex; justify-content: space-between; align-items: center;}
+        .close-menu-btn { background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer; padding: 5px; }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; padding-bottom: 20px; flex: 1; }
+        .q-badge {
+            width: 100%; aspect-ratio: 1; /* Kare */
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px; border: 1px solid var(--border);
+            cursor: pointer; font-size: 0.9rem; transition: 0.2s;
+            font-weight: 500; color: var(--text-light);
+        }
+        .q-badge.active { border-color: var(--primary); background: #eff6ff; font-weight: bold; color: var(--primary); }
+        .q-badge.answered { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Sonuç Ekranı */
+        #result-screen { display: none; padding-bottom: 5rem; }
+        .review-item { margin-bottom: 1.5rem; padding: 1rem; border-radius: 10px; border: 1px solid var(--border); background: white; font-size: 0.9rem;}
+
+        /* Desktop İyileştirmeleri (Opsiyonel) */
+        @media (min-width: 992px) {
+            body { display: flex; height: 100vh; }
+            .mobile-header { display: none; }
+            .sidebar {
+                position: static; width: 280px; left: 0 !important; opacity: 1 !important; visibility: visible !important;
+                background: var(--card); border-right: 1px solid var(--border);
+            }
+            .sidebar-content { width: 100%; box-shadow: none; padding: 1.5rem; }
+            .main-container { flex: 1; padding: 2rem; overflow-y: auto; display: flex; align-items: center; justify-content: center; }
+            .quiz-card { max-width: 800px; width: 100%; padding: 2rem; margin-bottom: 0;}
+            #q-grid { grid-template-columns: repeat(6, 1fr); gap: 6px; }
+            .btn-finish { margin-top: auto; }
+            .close-menu-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="mobile-header">
+    <span id="mobile-progress" style="color: var(--text-light); font-size: 0.9rem;">Soru 1 / 100</span>
+    <h1>Quiz</h1>
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+</header>
+
+<div class="sidebar" id="sidebar" onclick="closeSidebar(event)">
+    <div class="sidebar-content" onclick="event.stopPropagation()">
+        <h3>
+            <span>Sorular</span>
+            <button class="close-menu-btn" onclick="toggleSidebar()">✕</button>
+        </h3>
+        <div class="question-grid" id="q-grid"></div>
+        <div class="sidebar-footer">
+            <button class="btn-finish" onclick="finishQuiz()">Sınavı Bitir</button>
+        </div>
+    </div>
+</div>
+
+<main class="main-container" id="quiz-area">
+    <div class="quiz-card">
+        <div class="question-text" id="question">Soru yükleniyor...</div>
+        <div class="options-container" id="options"></div>
+
+        <div class="nav-controls">
+            <button class="btn-secondary" id="prev-btn" onclick="prevQuestion()">← Geri</button>
+            <button class="btn-primary" id="next-btn" onclick="nextQuestion()">Sonraki →</button>
+        </div>
+    </div>
+</main>
+
+<main class="main-container" id="result-screen">
+    <div class="quiz-card" style="max-width: 900px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-top: 0;">Sınav Sonucu</h2>
+        <div id="score-summary" style="text-align: center; font-size: 1.4rem; font-weight: bold; margin-bottom: 2rem; color: var(--primary);"></div>
+        <div id="review-list"></div>
+        <button class="btn-primary" style="width: 100%; margin-top: 2rem; display: block; padding: 1rem;" onclick="location.reload()">Sınavı Yeniden Başlat</button>
+    </div>
+</main>
+
+<script>
+    const questions = [
+        { q: "Aşağıdakilerden hangisi hipokalsemide görülen belirti ve bulgular arasında değildir?", a: ["QT kısalması", "Parmaklarda ve dudak çevresinde karıncalanma", "Kaba ve kuru cilt", "Subkapsüler katarakt", "Chvostek bulgusu"] },
+        { q: "Metforminle ilgili olarak aşağıdakilerden hangisi yanlıştır?", a: ["Kronik böbrek hastalığının tüm evrelerinde kontrendikedir.", "Sınıf 4 kalp yetmezliğinde kontrendikedir.", "En sık yan etkisi GİS irritasyonudur.", "B12 eksikliğine neden olabilir.", "Cerrahi öncesi kesilmelidir."] },
+        { q: "Aşağıdaki çevresel maruziyetlerden hangisi HCC gelişimiyle en güçlü şekilde ilişkilidir?", a: ["Aflatoksin B1", "Sigara", "Alkol", "Pestisitler", "Nitratlar"] },
+        { q: "EGFR ekzon 19 delesyonu saptanan metastatik akciğer adenokarsinomunda ilk basamak en uygun tedavi?", a: ["Osimertinib", "Lorlatinib", "Brigatinib", "Crizotinib", "Platin bazlı kemoterapi"] },
+        { q: "Aşağıdakilerden hangisi Vaskülo-Behçet hastalarında damar tutulumu şekli değildir?", a: ["Mikroanevrizma", "Alt ekstremite DVT", "Vena cava Süperior sendromu", "Pulmoner arter anevrizması", "Süperfisiyal tromboflebit"] },
+        { q: "Aşağıdakilerden hangisi hepato-splenomegali etiyolojilerinden biri değildir?", a: ["Kronik pankreatit", "Hematolojik maligniteler", "Kronik karaciğer hastalıkları", "Enfeksiyonlar", "Kronik miyeloproliferatif hastalıklar"] },
+        { q: "İstemsiz kilo kaybı olan bir hastada hangisi ilk basamak tetkiklerden biri değildir?", a: ["Tümör belirteçleri", "Sedimantasyon veya CRP", "TSH", "Karaciğer ve böbrek fonksiyon testleri", "Tam kan sayımı"] },
+        { q: "Fizik muayenede klepotaj varlığı ne düşündürür?", a: ["Pilor obstruksiyonu", "Akut kolesistit", "Gastik Ülser", "Duodenal Ülser", "Pankreatit"] }
+    ];
+
+    let currentIdx = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let quizFinished = false;
+
+    function init() {
+        renderSidebar();
+        loadQuestion();
     }
-    .question-grid {
-        grid-template-columns: repeat(5, 1fr); /* Masaüstünde 5'li sıra garanti */
+
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("open");
     }
-    .q-badge {
-        width: 38px;
-        height: 38px;
+
+    function closeSidebar(event) {
+        document.getElementById("sidebar").classList.remove("open");
     }
-}
+
+    function renderSidebar() {
+        const grid = document.getElementById("q-grid");
+        grid.innerHTML = "";
+        questions.forEach((_, i) => {
+            const badge = document.createElement("div");
+            badge.className = `q-badge ${i === currentIdx ? 'active' : ''} ${userAnswers[i] !== null ? 'answered' : ''}`;
+            badge.innerText = i + 1;
+            badge.onclick = () => { jumpToQuestion(i); closeSidebar(); };
+            grid.appendChild(badge);
+        });
+    }
+
+    function loadQuestion() {
+        if(quizFinished) return;
+
+        const q = questions[currentIdx];
+        document.getElementById("question").innerText = q.q;
+
+        const progressText = `Soru ${currentIdx + 1} / ${questions.length}`;
+        document.getElementById("mobile-progress").innerText = progressText;
+        document.getElementById("prev-btn").disabled = currentIdx === 0;
+
+        const optionsDiv = document.getElementById("options");
+        optionsDiv.innerHTML = "";
+
+        q.a.forEach((opt, index) => {
+            const div = document.createElement("div");
+            div.className = `option ${userAnswers[currentIdx] === index ? 'selected' : ''}`;
+            div.innerText = `${String.fromCharCode(65 + index)}) ${opt}`;
+            div.onclick = () => selectOption(index);
+            optionsDiv.appendChild(div);
+        });
+        renderSidebar();
+
+        // Soru yüklenince sayfanın üstüne odaklan (Mobil UX)
+        if(window.innerWidth < 992) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    function selectOption(idx) {
+        userAnswers[currentIdx] = idx;
+        loadQuestion();
+    }
+
+    function nextQuestion() {
+        if (currentIdx < questions.length - 1) {
+            currentIdx++;
+            loadQuestion();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            loadQuestion();
+        }
+    }
+
+    function jumpToQuestion(i) {
+        currentIdx = i;
+        loadQuestion();
+    }
+
+    function finishQuiz() {
+        if(!confirm("Sınavı bitirmek istediğinize emin misiniz?")) return;
+
+        quizFinished = true;
+        document.getElementById("quiz-area").style.display = "none";
+        document.getElementById("sidebar").style.display = "none";
+        document.querySelector(".mobile-header").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+        window.scrollTo(0,0);
+
+        let correctCount = 0;
+        const reviewList = document.getElementById("review-list");
+        reviewList.innerHTML = "";
+
+        questions.forEach((q, i) => {
+            const isCorrect = userAnswers[i] === 0; // A şıkkı (0) daima doğru
+            if(isCorrect) correctCount++;
+
+            const item = document.createElement("div");
+            item.className = "review-item";
+            item.style.borderLeft = `4px solid ${isCorrect ? 'var(--success)' : 'var(--error)'}`;
+
+            const selectedText = userAnswers[i] !== null ? `${String.fromCharCode(65 + userAnswers[i])}) ${q.a[userAnswers[i]]}` : 'Boş Bırakıldı';
+            const correctText = `A) ${q.a[0]}`;
+
+            item.innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 0.8rem; line-height: 1.4; color: var(--text);">Soru ${i + 1}: ${q.q}</div>
+                <div style="color: ${isCorrect ? 'var(--success)' : 'var(--error)'}; font-weight: ${isCorrect ? '500' : 'normal'}; margin-bottom: 0.3rem;">
+                    Senin Cevabın: ${selectedText}
+                </div>
+                ${!isCorrect ? `<div style="color: var(--success); font-weight: 500;">Doğru Cevap: ${correctText}</div>` : ''}
+            `;
+            reviewList.appendChild(item);
+        });
+
+        document.getElementById("score-summary").innerText = `Skor: ${correctCount} / ${questions.length}`;
+    }
+
+    init();
+</script>
+
+</body>
+</html>

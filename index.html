@@ -784,22 +784,7 @@
     }
 ];
 
-   Harika fikir! Soruların sırasını da her açılışta değiştirmek, ezberi önleyip tam bir gerçek sınav simülasyonu yaratacaktır.
-
-Bunun için init() fonksiyonumuzun içine, şıkları karıştırdıktan hemen sonra soruları da karıştıran bir döngü daha ekledim.
-
-Aşağıdaki güncellenmiş <script> kodunu alıp seninkiyle değiştirebilirsin (yine en üstteki kendi 100 soruluk questions dizini korumayı unutma):
-
-HTML
-<script>
-    // Buraya kendi 100 soruluk dizini yapıştıracaksın
-    const questions = [
-        { q: "Aşağıdakilerden hangisi Granülomatöz Polianjitis için doğru değildir?", a: ["Hastalarda akut süpüratif otitis media veya ciddi kronik otitis media ve karışık tipte iletimsel işitme kaybı görülebilirken, sensörinöral işitme kaybının ortaya çıkması beklenmez.", "Hastalar sıklıkla Staphylococcus aureus taşıyıcısıdır bu da relapslara neden olur.", "Laringeal ve trakeal mukozanın kronik inflamasyonu ses kısıklığına ve subglottik stenoza yol açabilir.", "Romatoid faktör olguların yarısına yakınında pozitif olabilir.", "Dilin lateral taraflarında ağrılı ülserler ve dişetine ‘’çilek’’ görünümü veren dişeti inflamasyonları görülebilir."] },
-        { q: "Aşağıdakilerden hangisi Romatoid artrit için doğru değildir?", a: ["Romatoid artrit hastalarında yüksek şeker düzeyinin eşlik ettiği eksüdatif plevral efüzyon gözlenir.", "Raynaud fenomeni romatoid artrit hastalarının yaklaşık %5-10 arasında mevcuttur ve hastalığın prognozunun kötü olabileceğine işaret edebilir.", "Romatoid nodüllerin varlığı, hastalığın seropozitif olduğunu ve prognozunun kötü olacağını gösterir.", "Piyoderma gangrenosum ve sweet sendromu romatoid artrit hastalarında görülebilen nötrofilik dermatozlardır.", "Romatoid artrit hastalarında odontoid prosesin medulla oblangataya subluksasyonu ani ölüme yol açabilir."] }
-        /* ... DİĞER SORULAR ... */
-    ];
-
-    let currentIdx = 0;
+let currentIdx = 0;
     let quizFinished = false;
     let quizData = []; 
     let userAnswers = []; 

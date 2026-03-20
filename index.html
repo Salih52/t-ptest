@@ -159,16 +159,630 @@
 </main>
 
 <script>
-    const questions = [
-        { q: "Aşağıdakilerden hangisi hipokalsemide görülen belirti ve bulgular arasında değildir?", a: ["QT kısalması", "Parmaklarda ve dudak çevresinde karıncalanma", "Kaba ve kuru cilt", "Subkapsüler katarakt", "Chvostek bulgusu"] },
-        { q: "Metforminle ilgili olarak aşağıdakilerden hangisi yanlıştır?", a: ["Kronik böbrek hastalığının tüm evrelerinde kontrendikedir.", "Sınıf 4 kalp yetmezliğinde kontrendikedir.", "En sık yan etkisi GİS irritasyonudur.", "B12 eksikliğine neden olabilir.", "Cerrahi öncesi kesilmelidir."] },
-        { q: "Aşağıdaki çevresel maruziyetlerden hangisi HCC gelişimiyle en güçlü şekilde ilişkilidir?", a: ["Aflatoksin B1", "Sigara", "Alkol", "Pestisitler", "Nitratlar"] },
-        { q: "EGFR ekzon 19 dellesyonu saptanan metastatik akciğer adenokarsinomunda ilk basamak en uygun tedavi?", a: ["Osimertinib", "Lorlatinib", "Brigatinib", "Crizotinib", "Platin bazlı kemoterapi"] },
-        { q: "Aşağıdakilerden hangisi Vaskülo-Behçet hastalarında damar tutulumu şekli değildir?", a: ["Mikroanevrizma", "Alt ekstremite DVT", "Vena cava Süperior sendromu", "Pulmoner arter anevrizması", "Süperfisiyal tromboflebit"] },
-        { q: "Aşağıdakilerden hangisi hepato-splenomegali etiyolojilerinden biri değildir?", a: ["Kronik pankreatit", "Hematolojik maligniteler", "Kronik karaciğer hastalıkları", "Enfeksiyonlar", "Kronik miyeloproliferatif hastalıklar"] },
-        { q: "İstemsiz kilo kaybı olan bir hastada hangisi ilk basamak tetkiklerden biri değildir?", a: ["Tümör belirteçleri", "Sedimantasyon veya CRP", "TSH", "Karaciğer ve böbrek fonksiyon testleri", "Tam kan sayımı"] },
-        { q: "Fizik muayenede klepotaj varlığı ne düşündürür?", a: ["Pilor obstruksiyonu", "Akut kolesistit", "Gastik Ülser", "Duodenal Ülser", "Pankreatit"] }
-    ];
+   const questions = [
+    { 
+        q: "Aşağıdakilerden hangisi Granülomatöz Polianjitis için doğru değildir?", 
+        a: [
+            "Hastalarda akut süpüratif otitis media veya ciddi kronik otitis media ve karışık tipte iletimsel işitme kaybı görülebilirken, sensörinöral işitme kaybının ortaya çıkması beklenmez.", 
+            "Hastalar sıklıkla Staphylococcus aureus taşıyıcısıdır bu da relapslara neden olur.", 
+            "Laringeal ve trakeal mukozanın kronik inflamasyonu ses kısıklığına ve subglottik stenoza yol açabilir.", 
+            "Romatoid faktör olguların yarısına yakınında pozitif olabilir.", 
+            "Dilin lateral taraflarında ağrılı ülserler ve dişetine ‘’çilek’’ görünümü veren dişeti inflamasyonları görülebilir."
+        ] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi Romatoid artrit için doğru değildir?", 
+        a: [
+            "Romatoid artrit hastalarında yüksek şeker düzeyinin eşlik ettiği eksüdatif plevral efüzyon gözlenir.", 
+            "Raynaud fenomeni romatoid artrit hastalarının yaklaşık %5-10 arasında mevcuttur ve hastalığın prognozunun kötü olabileceğine işaret edebilir.", 
+            "Romatoid nodüllerin varlığı, hastalığın seropozitif olduğunu ve prognozunun kötü olacağını gösterir.", 
+            "Piyoderma gangrenosum ve sweet sendromu romatoid artrit hastalarında görülebilen nötrofilik dermatozlardır.", 
+            "Romatoid artrit hastalarında odontoid prosesin medulla oblangataya subluksasyonu ani ölüme yol açabilir."
+        ] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi Ankilozan spondilit patogenezi için doğru değildir?", 
+        a: [
+            "HLA-DRB1 geni T hücrelere antijen sunumunda önemli bir rol üstlenir. HLA-DRB1 lokusunda 11.pozisyonda yer alan valin ve lösin amino asitleri hastalık seyrinin daha ağır olması ve radyografik progresyon açısından önemli bir risk faktörüdür.", 
+            "HLA-B27’ye spesifik otoimmün yanıtın, antijen peptitlerin amino asit bileşimine göre değişkenlik göstererek artritojenik peptid hipotezi ortaya çıkmıştır.", 
+            "Enfeksiyon oluşturan bakteriyel bir patojenden köken alan çapraz reaktif bir peptidin T hücrelerini stimüle ettiğini, ardından HLA-B27 ile ilişkili peptidlere yanıt verdiğini ileri süren moleküler mimikri hipotezidir.", 
+            "HLA-B27 ağır zinciri, hücre yüzeyinde stabil hemodimerler oluşturabilir. Bu hemodimerler doğal öldürücü hücrelerin doğrudan aktivasyonunu tetikleyerek IL-17 ve TNF-α salınımına yol açar.", 
+            "ERAP-1 (Endoplazmik retikulum aminopeptidaz 1) ve IL-23 reseptör polimorfizmleri ankilozan spondilit gelişimi açısından genetik risk oluşturmaktadır."
+        ] 
+    },
+    { 
+        q: "Aşağıdaki immunoterapi ilaçlarından hangisi metastatik küçük hücreli akciğer kanserinde birinci basamakta kullanılır?", 
+        a: ["Atezolizumab", "Cetuximab", "Durvalumab", "Avelumab", "Panitumumab"] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi metastatik küçük hücreli akciğer kanserinde ALK mutasyonu varsa uygulanır?", 
+        a: ["Alektinib", "Gefitinib", "Erlotinib", "Afatinib", "Vemurafenib"] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi HER-2 (+) meme kanserlerinde kullanılan hedefe yönelik tedavi ajanıdır?", 
+        a: ["Pertuzumab", "Axitinib", "Crizotinib", "Tosilimumab", "Kopesitabin"] 
+    },
+    { 
+        q: "Aşağıdaki kanserlerden hangisinde tarama testi uygulaması yoktur?", 
+        a: ["Mide", "Kolon", "Akciğer", "Serviks", "Meme"] 
+    },
+    { 
+        q: "Aşağıdaki elektrolit imbalanslarından hangisi, kişinin nutrisyon durumu ile ilgili, diğerlerine göre daha çok fikir verebilir?", 
+        a: ["hipofosfatemi", "hiperkalsemi", "hipokalemi", "hipermagnesemi", "hipomagnesemi"] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi yaşlılıktaki endokrin sistem değişikliklerinden biri değildir?", 
+        a: ["Paratiroid hormon azalır", "GH düzeyleri azalır", "Gonadotropin düzeyleri artar", "insülin direnci artar", "melatonin seviyesi azalır"] 
+    },
+    { 
+        q: "Aşağıdakileden hangisi nedeni bilinmeyen ateş ile başvuran hastada ilk başta istenecek tetkiklerden değildir?", 
+        a: ["Abdomen Manyetik Rezonans Görüntüleme", "Hemogram", "Sedimentasyon", "İdrar kültürü", "Brusella tüp aglütinasyon"] 
+    },
+    { 
+        q: "Aşağıdaki reseptörlerden hangisinin blokajı kusmada tedavi olarak kullanmaz?", 
+        a: ["Histamin - 3 reseptörü", "Muskarinik(M1 )", "Dopamin( D2)", "Nörokinin 1 (NK1)", "5-hidroksitriptamin (HT-3)"] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi masif splenomegali yapmaz?", 
+        a: ["İmmün trombositopeni", "Kala-azar Hastalığı", "Malarya", "Talasemi major", "Kronik miyeloid lösemi"] 
+    },
+    { 
+        q: "77 yaşında kadın hasta ödem şikayeti ile geliyor. Aşağıda kullandığı ilaçlardan hangisinin ödem etiyolojisinde rol oynadığını düşünebilirsiniz?", 
+        a: ["Ca kanal blokeri", "spironolakton", "seftriakson", "dapagliflozin", "telmisartan"] 
+    },
+    { 
+        q: "Aşağıdakilerin hangisi sağlıklı bir kişinin yaklaşık protein ihtiyacını tanımlar?", 
+        a: ["1,2-1,5 gr/kilo/gün", "3,5-5,5 gr/kilo/gün", "2-6 gr/kilo/gün", "4-5 gr/kilo/gün", "0,5-0,8 gr/kilo/gün"] 
+    },
+    { 
+        q: "Aşağıdaki hastalık – bulgu eşleştirmelerinden hangisinin görülmesi en az olasıdır?", 
+        a: ["Multiple Myelom - Splenomegali", "Myeloproliferatif Hastalık – Tromboz", "Akut Myeloid Lösemi – Kanama", "Otoimmun Hemolitik Anemi – Solukluk", "Immun Trombositopeni – Islak Purpura"] 
+    },
+    { 
+        q: "Üst gastrointestinal sistem kanaması nedeniyle acil servise başvuran 45 yaşında erkek hastaya nazogastrik sonda takılmış ve aktif kanamasının olmadığı gözlenmiş. Bakılan Hemoglobin: 5,6 g/dl, Trombosit: 210.000 µ/L, Lökosit: 5600 µ/L tespit edilip 2 ünite eritrosit süspansiyon transfüzyonu planlanmış. İkinci ünite transfüzyon sırasında hastada 38,3 °C ateş, hipotansiyon, sırt ağrısı gelişmiş. Bu hastanın mevcut durumunun en olası nedeni aşağıdakilerden hangisidir?", 
+        a: ["Akut hemolitik transfüzyon reaksiyonu", "Geç hemolitik transfüzyon reaksiyonu", "Kan ürününün bakteriyel kontaminasyonu", "Kontrolsüz gastrointestinal kanama", "Febril non-hemolitik transfüzyon reaksiyonu"] 
+    },
+    { 
+        q: "Masif kan transfüzyonu sırasında aşağıdakilerden hangilerinin gelişme riski vardır?<br>I: Trombositopeni<br>II: Koagülopati<br>III: Hipotermi<br>IV: Hipokalsemi", 
+        a: ["I, II, III, IV", "I, II, III", "II, III, IV", "I, II, IV", "I, III, IV"] 
+    },
+    { 
+        q: "26 yaşındaki erkek hasta, İstanbul’da yaşıyor, Son üç gündür geçmeyen bulantı, kas ağrısı, karın krampları ve ishal şikayetleriyle hastaneye götürülüyor. İshal sulu ve (günde 10-15 kere),Dışkıda kan yok, Hastanın antibiyotik kullanımı yok, Vitamin dışında herhangi bir ilaç kullanımı yok, Bilinen altta yatan bir hastalığı yok, yakın zamanda seyahat öyküsü yok. hafta sonu mangal yapmak üzere pikniğe gidiyorlar. Piknik yaptıkları alan nehir kenarında, ormanlık bir alan. nehirden oltayla balık tuttuklarını söyledi. Ateş: 38.2 °C, Nabız: 106/dakika, Kan basıncı 95/65 mmHg, Abdominal muayenede barsak seslerinin artması dışında diğer sistem muayenelerde herhangi bir bulguya rastlanmıyor. Dışkı mikroskobisinde lökosit saptanıyor. Dışkı kültüründe termostabil hemolizin üreten, ve koyun kanlı agarda insan eritrositlerini beta hemoliz, Tiosülfat-citrat-bile-sükroz besiyerinde yeşil koloniler oluşturan mikroorganizma ürüyor. Bu hastada olası etken ve tedavi yaklaşımınız ne olur?<br>I. Vibrio parahaemolyticus<br>II. salmonella gastroeneridis<br>III. Rotavirüs<br>IV, entercoccus fecalis<br>V. Campylobacter", 
+        a: [
+            "Vibrio parahaemolyticus, semptomatik ve destek tedavi", 
+            "Vibrio parahaemolyticus, semptomatik ve destek tedavi, metranizdazol", 
+            "Vibrio parahaemolyticus, semptomatik ve destek tedavi, antidiyareyik, metranizdazol, paramomisin", 
+            "salmonella gastroeneridis, semptomatik ve destek tedavisi", 
+            "salmonella gastroeneridis, semptomatik ve destek tedavisi, antidiyareyik, metranizdazol,ornidazol"
+        ] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi gestasyonel diyabet risk faktörleri arasında değildir?", 
+        a: ["Anne yaşının 35 den küçük olması", "Polikistik over sendromlu olmak", "Birinci derecede yakınlarında tip 2 diyabet öyküsü", "Atipik antipsikotik ilaç kullanımı", "Obezite"] 
+    },
+    { 
+        q: "Portal hipertansiyon (PHT) için doğru olanı seçiniz", 
+        a: [
+            "Transjuguler intrahepatik portosistemik şant (TİPS) ; Hepatik ven tıkanmalarında kullanılmaktadır", 
+            "Somatostatin; Glukagon,VİP, Substans-P gibi barsak kökenli peptidlerin sekresyonunu stimüle eder", 
+            "Siroz presinüzoidal intrahepatik portal hipertansiyon nedenidir", 
+            "Venooklüzif hastalık presinüzoidal intrahepatik portal hipertansiyon nedenidir", 
+            "Sarkoidozis sinüzoidal intrahepatik portal hipertansiyon nedenidir"
+        ] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi proton pompa inhibitörlerinin yan etkisi değildir?", 
+        a: ["İntestinal metaplazi", "Clostridium difficile bağlı kolit", "Demans", "Kronik Böbrek Hastalığı", "Toplum kökenli pnömoni"] 
+    },
+    { 
+        q: "Crohn hastalığı (CH) için doğru olanı seçiniz", 
+        a: [
+            "Aşırı sanitasyon crohn hastalığı için olumsuz bir çevresel faktördür", 
+            "ASCA(anti sakkaromiçes cereviscia antikoru) Crohn hastalığı ile korelasyon göstermeyen bir antigliadin antikordur", 
+            "Kolonoskopide vasküler görünüm bulanıktır", 
+            "Anterior uveit beklenen bir ekstraintestinal bulgu değildir", 
+            "Histopatolojik incelemede kript apsesi yaygın olarak görülür"
+        ] 
+    },
+    { 
+        q: "Ülseratif kolit (ÜK) için doğru olanı seçiniz", 
+        a: [
+            "Primer sklerozan kolanjitli hastaların %75’inde ülseratif kolit, %5’in altında ise crohn hastalığı birlikte görülür", 
+            "ÜK’te p-ANCA (perinükleer antinötrofil sitoplazmik antikor) sıklığı %6 dolayında değişiklik gösterir", 
+            "Appendektomi ülseratif kolitte olumsuz bir çevresel faktördür", 
+            "Ülseratif kolitte hastalık tutulumu segmenterdir", 
+            "Eritema nodosum hastalık aktivitesi ile korele olmayan ekstraintestinal bulgudur"
+        ] 
+    },
+    { 
+        q: "Behçet hastalığı için doğru olmayan şıkkı işaretleyiniz.", 
+        a: [
+            "Vaskülo-Behçet tablosu Bahçet hastalarının %25'inde gelişir. Venleri daha az tutar. Arterlerde sıklıkla anevrizma gelişir. Mortalite nedeni olabilir. Venöz tutulumda trombo-emboli daha sık görülür.", 
+            "Behçet hastalarında beyin tutulumu daha çok beyin sapında olur. Meningo-ensefalit de görülebilir. Bu hastalarda pulse streoid tedavisi uygulanmalıdır.", 
+            "Behçet hastalarında eritema nodozum kadınlarda, süperfisiyal tromboflebit erkeklerde sık olup kötü prognoz göstergesidir. Papülo-püstüler lezyonlar daha çok sırt ve göğüs bölgesinde oluşur", 
+            "Behçet hastalarında primer böbrek tutulumu nadirdir. Proteinüri gelişirse sekonder amiloidoz düşünülmeli ve biyopsi ile tanı kesinleştirilmelidir.", 
+            "Behçet hastalarında bilateral panüveit görülmekle beraber retinal vaskülit de gelişebilir. Üvet önemli körlük nedeni iken biyolojik ilaçlardan sonra azalma olmuştur."
+        ] 
+    },
+    { 
+        q: "Sistemik Lupus Eritematozuslu hastalar için doğru olmayan şıkkı işaretleyiniz.", 
+        a: [
+            "SLE'li hastalarda oligoartiküler eklem tutulumu sık olup değişik deformitelere neden olabilir.", 
+            "SLE'li hastalarda böbrek tutulumu sık görülür ve immünkompleks mekanizmayla gelişir. Bu hastalarda Anti-ds DNA pozitifiği ve komleman-3 azalması daha sık görülür.", 
+            "SLE'li hastalarda serözite sıktır. En çok akciğer ve kalpde görülür.", 
+            "SLE'li hastalarda görülen malar raş, diskoid raş ve fotosensitivite spesifik deri bulgularıdır.", 
+            "SLE'li hastalarda sitopeniler sıktır ve bazen pansitopeni görülebilir. Hastalar bazen otoimmün trombositopeni, bazen otoimmün lökopeni, bazen de otoimmün hemolitik anemi ile gelebilir."
+        ] 
+    },
+    { 
+        q: "Kanserde immünoterapi ile ilgili olarak aşağıdakilerden hangisi doğrudur?", 
+        a: [
+            "Tümör mikroçevresi immünoterapilere yanıtı etkileyebilmektedir.", 
+            "Avelumab anti PD-1 monoklonal antikorudur.", 
+            "İmmünoterapide yanıt hızlı başlamaktadır ve doz ile ilişkilidir.", 
+            "İmmünoterapi ile ilişkili en sık görülen yan etkiler hematolojiktir.", 
+            "İmmünoterapi tüm kanserlerde etkili olmaktadır."
+        ] 
+    },
+    { 
+        q: "Hangisi pretibial ödemin direkt nedenlerinden biri değildir?", 
+        a: ["Hipertroidi", "Böbrek yetmezliği", "Nefrotik sendrom", "Siroz", "Sağ kalp yetmezliği"] 
+    },
+    { 
+        q: "Hangisinde renal anjiyogramda multipl mikroanevrizmalar en yaygın olarak saptanır?", 
+        a: ["Poliarteritis nodoza", "Kawasaki hastalığı", "Mikroskopik arteritis", "Granulamatozis poliarteritis", "Temporal arterit"] 
+    },
+    { 
+        q: "Hangisi akut interstisyel nefrit ile kronik interstisyel nefrit arasındaki fark değildir?", 
+        a: ["Hiperkalemi", "Geridönüşümlülük", "Fibrozis varlığı", "Hastalık süresi", "Patojene maruziyet süresi"] 
+    },
+    { 
+        q: "Hangisi kronik interstisyel nefrit için risk oluşturduğu yaygın olarak kabul edilmektedir?", 
+        a: ["Zirai ilaç", "Demir", "Godalinium", "İyodiksanol", "Amlodipin"] 
+    },
+    { 
+        q: "Akut tubulointerstisyel nefritin en yaygın nedenlerinden olan hangisidir?", 
+        a: ["Trimetoprim", "Prednizolon", "Mikofenalat mofetil", "Azatioprin", "Takrolimus"] 
+    },
+    { 
+        q: "Diyabetes mellitus kaynaklı böbrek hastalığını engellemek için primer korumada hangisi hedeflerden değildir?", 
+        a: ["serum urik asit <9 mg/dL olması", "Sigara bırakılması", "Ortalama kan basıncı <130/80 mmHg olması", "Beden kitle indeksi <30 kg/m2 olması", "HbA1c <% 7 olması"] 
+    },
+    { 
+        q: "Disüri şikayeti olan ve tam idrar tetkikinde hematuri ve püürisi olan bir hastanın dansite 1.020 iken protein 30 mg/dL bulunuyor. Serum albumin düzeyi 3.8 g/dL, total protein değeri 7.6 mg/dL saptanıyor. Proteinüri kaynağına göre değerlendirildiğinde hangi tipte olma olasılığı daha fazladır?", 
+        a: ["Doku", "Glomerüler", "Tübüler", "Taşma", "Taşma + tübüler"] 
+    },
+    { 
+        q: "Onkolojik acillerle ilgili olarak aşağıdakilerden hangisi doğrudur?", 
+        a: [
+            "Nötropenik ateşte kültürler alındıktan sonra hızlıca geniş spektrumlu antibiyotikler başlanarak G-CSF desteği uygulanır.", 
+            "Tümör lizis sendromu tüm tümörlerde görülebilmektedir.", 
+            "Malign hiponatremi en sık görülen metabolik onkolojik acildir.", 
+            "Erkeklerde en sık hiperkalsemi görülen kanser prostat kanseridir.", 
+            "Denosumab ile ilişkili renal yetmezlik gelişebilmektedir."
+        ] 
+    },
+    { 
+        q: "Aşağıdaki seçeneklerden hangisi kemoterapi uygulaması ve kemoterapi yan etkileri ile ilgili olarak doğru ifade edilmemiştir?", 
+        a: [
+            "Kemoterapi uygulaması öncesi kan tetkiklerinin yapılmasına gerek yoktur", 
+            "Kemoterapi planlanırken hastanın performansı değerlendirilmelidir", 
+            "Sisplatin kullanımına bağlı kusma görülebilir", 
+            "Kemoterapi ilaçları ishal ya da kabızlık yapabilir", 
+            "Saç dökülmesi sık görülen yan etkilerdendir"
+        ] 
+    },
+    { 
+        q: "Gastrointesital sistem kanserleri ile ilgili olarak aşağıdaki ifadelerden hangisi doğrudur?", 
+        a: [
+            "Karaciğer kanserli hastaların tedavisinde karaciğer transplantasyonu tedavi seçeneklerinden biridir", 
+            "Pankreas kanserleri en çok pankreas kuyruk kesiminde lokalizedir", 
+            "Mide kanserlerinin çoğu yassı hücreli karsinomlardır", 
+            "Kolorektal kanserler en sık beyin metastazı yapar", 
+            "Özefagus kanserleri ile ilgili en sık görülen semptom kilo artışıdır"
+        ] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi endokrin hipertansiyon nedeni değildir?", 
+        a: ["Primer hipoparatiroidi", "Primer hiperaldosteronizm", "Akromegali", "Cushing sendromu", "Primer hipotiroidi"] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi indirekt ( unkonjuge) hiperbilirübinemi nedenlerinden birisi değildir?", 
+        a: ["Koledok taşı", "Crigler-Najar Sendromu", "Hipertiroidi", "Gilbert sendromu", "Hemoliz"] 
+    },
+    { 
+        q: "Aşırı terleme yakınması hangisinde beklenmez?", 
+        a: ["Hipotiroidi", "Akromegali", "Brucelloz", "Feokromasitoma", "Ağır hipoglisemi"] 
+    },
+    { 
+        q: "Hangisi kronik böbrek hastasında acil diyaliz endikasyonlarından biridir?", 
+        a: ["Anürik olup akut akc ödemi olan hastada", "BUN>60 ise", "Kreatinin >7 mg/dl ise", "Pretibial 2 + ödem varsa", "Potasyum>5.5 ise"] 
+    },
+    { 
+        q: "Böbrek boyutlarında küçülme olmadan kronik böbrek hastalığı yapan durum aşağıdakilerden hangisidir?", 
+        a: ["Polikistik böbrek hastalığı", "Kronik glomerülonefrit", "Uzun süreli non steroid anti inflamatuar ilaç kullanımına bağlı KBH", "Fokal segmental glomerüloskleroz", "Membranöz glomerülonefrit"] 
+    },
+    { 
+        q: "60 yaşında kadın hastanın son 1 yıldır ayda bir aralıklı olarak yapılan tetkiklerinde bun, kreatinin normal bulunuyor. 2 ay aralıklı bakılan (5 defa) 24 saatlik idrar tetkikinde kreatinin klirensi 102-110 ml/dk arasında (yaşına göre normal) proteinüri ise 1.4- 2 gr/gün arasında ölçülüyor. Bu hastanın tanısı için hangisi doğrudur?", 
+        a: ["Kronik Böbrek Hastalığı", "Akut böbrek Hastalığı", "Böbrek fonksiyonları tamamen normal", "Asemptomatik akut böbrek hasarı", "Kronik zeminde akut böbrek hasarı"] 
+    },
+    { 
+        q: "50 yaşında hipertansif hasta diyetine uymakta ve amlodipin 10 mg 1x1, ramipril 10 mg 1x1, indepamid 2.5 mg 1x1 düzenli kullanmasına rağmen son 3 aydaki takiplerinde ölçülen kan basıncı çizelgesine göre 160/100 mmHg ölçüldüğü görülüyor. Başka ilaç kullanmıyor. Poliklinikteki kan basıncı ölçümü 155/100mmHg olup diğer muayene bulguları normal bulunuyor. İdrar tetkiki normal, böbrek fonksiyonları ve EKG si normal bulunuyor .Bu hasta için hangisi doğrudur?", 
+        a: ["Dirençli hipertansiyon", "Hipertansif acil durum", "İvedi hipertansiyon", "Refrakter hipertansiyon", "Kontrolsüz hipertansiyon"] 
+    },
+    { 
+        q: "Patent 2 ye göre Doğu Karadeniz bölgesinde hipertansiyon prevalansı kaçtır?", 
+        a: ["%38.7", "%30.3", "%40.6", "%50", "%29"] 
+    },
+    { 
+        q: "Türkiyede Patent2 çalışmasına göre cinsiyet gözetmeksizin hipertansiyon farkındalık oranı kaçtır?", 
+        a: ["% 54.7", "%44.3", "%30.3", "%41.3", "%29.3"] 
+    },
+    { 
+        q: "Hipokalemisi 2.1 mEq/L düzeyinde olan hastanın aynı zamanda Bikarbonat düzeyi 15 mEq/L ise tedavisi hayati olan bu durumda nasıl bir yol izlenmelidir?", 
+        a: [
+            "Tedavide öncelikle potasyum replasmanı ile K 2.5 mEq/L nin üzerine çıkarılmalı sonra bikarbonat verilmeli", 
+            "Aynı anda hem potasyum hemde bikarbonat tedavisi ivedilikle başlanmalıdır", 
+            "Öncelik bikarbonat tedavisi olup bikarbonat normale geldikten sonra potasyum verilir", 
+            "Sadece potasyum replasmanı yeterlidir", 
+            "Sadece bikarbonat tedavisi yeterlidir"
+        ] 
+    },
+    { 
+        q: "Aşağıdaki seçeneklerden hangisi Graves hastalığında görülmez?", 
+        a: [
+            "Radyoaktif iyot uptake düşüklüğü", 
+            "Tiroid sintigrafisinde tiroid bezinde diffüz hiperplazi", 
+            "Tiroid stimüle edici immünglobulin yüksekliği", 
+            "TSH reseptör antikoru pozitifliği", 
+            "Tiroid doppler ultrasonografisinde tiroid bezi kanlanmasının artması"
+        ] 
+    },
+    { 
+        q: "Aşağıdaki seçeneklerden hangisi subklinik hipotiroidi tespit edilen hastada tedavi başlama endikasyonlarından değildir?", 
+        a: ["Evre 1 guatr", "Klinik semptomların varlığı", "Bipolar bozukluk", "Progresif TSH artışı", "Dislipidemi"] 
+    },
+    { 
+        q: "Tip 2 diyabetes mellitus tedavisi ile ilgili aşağıdaki seçeneklerden hangisi yanlıştır?", 
+        a: [
+            "Sülfonilüre ve glinidler kombinasyon tedavisinde kullanılabilir.", 
+            "Metformin tedavisi GFR<30 ml/dk altında kontrendikedir.", 
+            "GLP-1 analoglarının akut pankreatit öyküsü olan hastalarda kullanımı kontrendikedir.", 
+            "SGLT-2 inhibitörü başlanan hastalara oral hidrasyon ve hijyen konusunda eğitim verilmelidir.", 
+            "Metformin tedavisi B12 vitamini eksikliği yapabilir."
+        ] 
+    },
+    { 
+        q: "Aşağıdaki seçeneklerden hangisi mutlak insülin tedavisi endikasyonlarından değildir?", 
+        a: ["Koroner kalp hastalığı", "Tip 1 diyabetes mellitus", "Diyabetik ketoasidoz", "Erişkinin latent otoimmun diyabeti", "Ağır karaciğer yetmezliği"] 
+    },
+    { 
+        q: "40 yaşında erkek hasta, aile hekimine boyun sağ tarafta şişlik şikâyeti le başvuruyor. Hastadan alınan anamnezde; şişliği 3 ay önce farkettiğini, ağrısız olduğu, annesinde tiroid kanseri olduğu, şimdiye kadar herhangi bir tiroid hastalığı geçirmediği ve tiroid ile ilgili herhangi bir ilaç kullanmadığı öğreniliyor. Yapılan FM de; Tiroid sağ loba uyan alanda yaklaşık 3 cm lik, yutkunmakla hareket eden bir kitle ve sağ ön servikalde 2 cm lik LAP (hareketli, ağrısız yüzeyi düzgün, fluktuasyon veya fistülizasyon göstermeyen) tespit ediliyor.<br>Hastanın tanı ve tedavisine yönelik aşağıdakilerden hangisi doğru değildir?", 
+        a: [
+            "Hastanın nodülünün 3 cm olması ve ailede tiroid kanseri öyküsü olması nedeniyle cerrahi önerilmelidir.", 
+            "Ultrasonografi istenmelidir.", 
+            "TSH istenmelidir.", 
+            "Laboratuar sonuçlarında TSH düşük ise Tiroid sintigrafisi istenmelidir.", 
+            "TSH normal ise, T4 istenmelidir."
+        ] 
+    },
+    { 
+        q: "Endokrinolojik Aciller için aşağıdakilerden hangisi doğru değildir?", 
+        a: [
+            "Hipofiz apopleksisinin en sık nedeni travmadır.", 
+            "Tiroid krizinin en sık nedeni, Graves hastalığıdır.", 
+            "Miksödem komasında, laboratuarda; hipoglisemi ve hiponatremi görülür.", 
+            "Akut adrenal krizde sık görülen klinik özellikler: hipotansiyon ve şok’tur.", 
+            "Akut adrenal krizin tedavisinde; Glukokortikoid replasmanı yapılırken; ilk 24 saatte Hidrokortizon, 4x100 mg İ.V (veya eşdeğeri metil prednizolon), sonrasında hasta stabilleştiğinde 4x50 mg verilir."
+        ] 
+    },
+    { 
+        q: "Obezite için aşağıdakilerden hangisi doğru değildir?", 
+        a: [
+            "BKİ>40 kg/m2 olan hastalarda ilk tedavi seçeneği medikaldir.", 
+            "Hastaların kilo vermesi için hedef; Yavaş kilo kaybı (mevcut kilonun %5-10’unun 3-6 aylık sürede verilip 1 yıl süresince bunun korunması) şeklinde olmalıdır.", 
+            "Medikal tedavi gereken durumlarda liraglutid kullanılabilir.", 
+            "Orlistat; barsak lümeninde gastrik ve pankreatik lipaz aktivitesini inhibe ederek etkisini gösteren bir obezite ilacıdır.", 
+            "Obezitede diyet tedavisinde; 1200 kcal altında diyet önerilmemelidir."
+        ] 
+    },
+    { 
+        q: "Akut yaygın damar içi pıhtılaşma sendromu tanılı bir hastada aşağıdaki bulgulardan hangisinin varlığı tromboz ile ilişkilidir?", 
+        a: ["Protein C düzeyinde azalma", "Trombin-antitrombin kompleksinde artış", "Trombositopeni", "PT uzaması", "Hipofibrinojenemi"] 
+    },
+    { 
+        q: "Rutin tetkiklerinde aPTT normalin iki katı uzun ancak kanama öyküsü olmayan 30 yaşında erkek hastada öncelikle hangi faktör eksikliği düşülmelidir?", 
+        a: ["Faktör XII", "Faktör XI", "Faktör X", "Faktör IX", "Faktör VIII"] 
+    },
+    { 
+        q: "Makrositer anemi ile ilgili hangisi yanlıştır?", 
+        a: [
+            "Yaş artışı ile birlikte megaloblastik anemi insidansı bariz azalır", 
+            "Makrositozun toplumdaki sıklığı %2-4 civarındadır", 
+            "Makrositozlu vakaların %60 kadarında anemi vardır", 
+            "Paraproteinemi ve hiperglisemi yalancı makrositoza yol açabilir", 
+            "Belirgin retikülositozun olduğu anemiler makrositer olabilir"
+        ] 
+    },
+    { 
+        q: "Tekrarlayan burun kanaması şikayeti ile başvuran 19 yaşında bayan hastanın yapılan tetkiklerinde kanama zamanı ve aPTT uzun, faktör VIII düzeyi %5 olarak bulunuyor. Hastanın mevcut bulguları hangi tip Von Willebrand Hastalığı ile uyumludur?", 
+        a: ["Tip 3", "Tip 1", "Tip 2A", "Tip 2B", "Tip 2M"] 
+    },
+    { 
+        q: "Sıcak tip otoimmun hemolitik anemide aşağıdaki laboratuvar bulgularından hangisi görülmez?", 
+        a: ["Tam kan sayımında MCHC düşüklüğü", "Retikülositoz", "Haptoglobulin azalması", "Periferik yaymada sferositoz ve polikromazi", "MCV yüksekliği"] 
+    },
+    { 
+        q: "Trombotik trombositopenik purpura ön tanısıyla tetkik edilen 50 yaşında erkek hastanın aşağıda sonuçlarından hangisi kesin tanı koydurucudur?", 
+        a: ["ADAMTS13 antikor varlığı", "Trombositopeni", "PT, aPTT normal olması", "Negatif direkt coombs", "Artmış LDH"] 
+    },
+    { 
+        q: "Demir eksikliğinin ilk dönemi (stage1=prelatent=deplesyon dönemi) için aşağıdakilerden hangisi yanlıştır?", 
+        a: ["Eritrosit serbest protoporfirini artmıştır", "Hemoglobin düzeyi normaldir", "Serum demiri normaldir", "Serum Ferritini azalmıştır", "Transferrin satürasyonu normaldir"] 
+    },
+    { 
+        q: "Anemiler patofizyolojilerine göre sınıflandırıldığında aşağıdakilerden hangileri hem sentez defekti yaparak anemiye yol açan hastalıklar arasında yer alır?<br>I-Demir eksikliği anemisi<br>II-Talasemi<br>III-B12 ekskliği anemisi<br>IV-Sideroblastik anemi<br>V-Kronik hastalık anemisi", 
+        a: ["I-IV-V", "I-II-IV-V", "II-III", "II-IV-V", "I-III-IV"] 
+    },
+    { 
+        q: "Hangisi anemi kompansasyon mekanizması değildir?", 
+        a: [
+            "Transforming growth faktör beta düzeyinde artış", 
+            "Vasküler endotelyal growth faktörü artışı", 
+            "Anaerobik glikolizde artış", 
+            "Eritropoetin artışı", 
+            "Eritrosit 2-3 DPG düzeyinde artış"
+        ] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi lenfadenopati için yanlıştır?", 
+        a: [
+            "Batın içerisinde bulunan lenfadenopatiler 0.5 cm üzerinde ise patolojiktir.", 
+            "İnguinal bölgede bulunan lenfadenopatiler 2 cm üzerinde ise patolojiktir.", 
+            "Mediastinal bölgede bulunan lenfadenopatiler 1 cm üzerinde ise patolojiktir.", 
+            "Aksiller bölgede bulunan lenfadenopatiler 1 cm üzerinde ise patolojiktir.", 
+            "Supraklavikular bölgede bulunan lenfadenopatiler palpabl ise patolojiktir."
+        ] 
+    },
+    { 
+        q: "Birkaç hafta ya da ayda gelişen, çok sayıda lenfadenopati oluşturan, genellikle ağrısız, cilde fistülize olabilen ve fluktasyon verebilen lenfadenopati varlığında aklınıza ilk önce hangi hastalık gelmelidir?", 
+        a: ["Tüberküloz", "Non-Hodkign lenfoma", "Hodkign lenfoma", "EBV enfeksiyonu", "Metastatik baş-boyun kanseri"] 
+    },
+    { 
+        q: "Tip 1 diyabetle ilgili olarak aşağıdakilerden hangisi yanlıştır?", 
+        a: [
+            "Yaşamın ilk altı ayında sadece anne sütüyle beslenmek tip 1 diyabet riskini artırmaktadır.", 
+            "Çocukluk yaşlarında diyabetin en sık nedenidir.", 
+            "Erişkin yaşlarda tip 1 diyabet görülebilmektedir.", 
+            "Diğer otoimmun hastalıklarla birlikte görülebilmektedir.", 
+            "Hastalar genellikle zayıf ya da normal kiloludur."
+        ] 
+    },
+    { 
+        q: "Karın ağrısı ile ilgili olarak aşağıdaki seçeneklerden hangisi yanlıştır?", 
+        a: [
+            "Parietal ağrı abdominal organların tümör infiltrasyonu, distansiyonu ve bası gibi durumlarda gelişir", 
+            "Visseral peritonun inervasyonu A delta lifleri ile olduğu için iyi lokalize edilemez", 
+            "Yansıyan ağrı hastalıklı organın uzağında hissedilen ağrıdır", 
+            "Akut kolesistit ve üreter taşları yansıyan ağrıya neden olabilir", 
+            "Genelde parietal ağrı, viseral ağrıya göre daha şiddetlidir"
+        ] 
+    },
+    { 
+        q: "Aşağıdaki klinik tanılardan hangisinin non-alkolik yağlı karaciğer hastalığıyla beraber görülme sıklığı çok nadirdir?", 
+        a: ["Akut böbrek yetmezliği", "Dislipidemi", "Tip 2 diabetes mellitus", "Hipertansiyon", "Obezite"] 
+    },
+    { 
+        q: "Aşağıdaki durumların hangisinde post-hepatik tip portal hipertansiyon oluşur?", 
+        a: ["Budd-Chiari sendromu", "Sinuzoidal obstrüksiyon sendromu", "Portal ven trombozu", "Primer biliyer siroz", "Splenik ven trombozu"] 
+    },
+    { 
+        q: "Günümüzde 1. basamak Helikobacter Pylori eradikasyon tedavisinde kullanılan [ilaç, uygun doz] ikililerinden hangisi doğrudur?", 
+        a: ["Amoksisilin, 2x1000mg", "Rabeprazol, 1x20mg", "Bizmut subsitrat, 2x1 tablet", "Metronidazol, 4x500mg", "Klaritromisin, 2x500mg"] 
+    },
+    { 
+        q: "Dispepsi ile başvuran ve özofagogastroduodenoskopide antral gastrit tespit edilen bir olgunun endoskopik biyopsi materyalinin histopatolojik incelemesinde tespit edilen bulgulardan hangisi hastanın takip ve tedavisini etkilemez?", 
+        a: ["İnflamasyonun şiddeti", "Atrofi varlığı", "İntestinal metaplazi görülmesi", "Helicobacter pylori varlığı", "Displazi görülmesi"] 
+    },
+    { 
+        q: "Malign hiperkalsemi, primer hiperparatiroidi ayırımında aşağıdakilerden hangisi yanlıştır?", 
+        a: [
+            "Malign hiperkalsemide hiperkalsemi semptomları daha siliktir. Primer hiperparatirodide daha belirgindir.", 
+            "Malign hiperkalsemi sıklıkla akut başlangıçlıdır. Primer hiperparatiroidiye bağlı hiperkalsemi kroniktir.", 
+            "Malign hiperkalsemide PTH düzeyleri süpresedir. Primer hiperparatiroidide yüksektir.", 
+            "Malign hiperkalsemide kalsiyum düzeyleri primer hiperparatiroidiye göre daha yüksek olma eğilimindedir.", 
+            "Malign hiperkalsemi etyolojisi tümör dokusundan PTHrP üretimine bağlı olabilmektedir. Primer hiperparatiroidide ise sıklıkla paratiroid adenomundan PTH sentez ve sekresyonunun artmasına bağlı olarak gelişmektedir."
+        ] 
+    },
+    { 
+        q: "Gastroözofageal reflü hastalığı (GÖRH) ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?", 
+        a: [
+            "Geçici AÖS relaksasyonu, GÖRH olan olgularda olmayanlara göre daha sık görülür.", 
+            "Hastaların % 25‘inde retrosternal yanma görülmez.", 
+            "Hastaların yaklaşık yarısında retrosternal yanma baskın semptom değildir.", 
+            "Substernal bölgede angina pektorisi andıran sıkışma hissi olabilmektedir.", 
+            "Hiatal hernili olguların sadece % 15-20’inde GÖRH saptanmaktadır."
+        ] 
+    },
+    { 
+        q: "Sirozlu hastanın sağkalımını belirlemede aşağıdaki elektrolitlerden hangisi kullanılmaktadır?", 
+        a: ["Sodyum", "Potasyum", "Magnezyum", "Kalsiyum", "Fosfat"] 
+    },
+    { 
+        q: "Hepatik ensefalopati tedavisinde kullandığımız ilaçların hedefi hangisidir?", 
+        a: ["İntestinal flora", "Serebral sinaptik ileti", "Hepatositler", "Renal tubul hücreleri", "Splanknik kan dolaşımı"] 
+    },
+    { 
+        q: "Polikistik over sendromu altta verilen hastalıklardan hangisi için risk faktörüdür?", 
+        a: ["Tip 2 Diyabetes Mellitus", "Osteoporoz", "Akromegali", "LADA (Erişkinde görülen otoimmün diyabet)", "Tip 1 Diyabetes Mellitus"] 
+    },
+    { 
+        q: "Altta verilenlerden hangisi veya hangileri endokrin hipertansiyon nedenleri arasındadır ?<br>I) 11 Beta hidroksilaz eksikliği<br>II) Hipoparatiroidizm<br>III) Addison Hastalığı<br>IV) Hipotiroidizm", 
+        a: ["I ve IV", "I-II-III-IV", "I- III- IV", "Sadece IV", "II-III-IV"] 
+    },
+    { 
+        q: "Tip 2 Diyabetes Mellitus tanısı olan hastanın labaratuvar bulguları altta verilmiştir. Hangi bulgular Diyabetik ketoasidoz ile uyumlu değildir?<br>I) Kan glukozu: 270 mg/dl<br>II) Kan gazı bikarbonat: 12mM/L<br>III) Serum ozmolalitesi: 340 mOsm/l<br>IV) Anyon açığı: 10", 
+        a: ["III-IV", "I ve II", "Sadece I", "I ve IV", "I, II, III, IV"] 
+    },
+    { 
+        q: "Aşağıdaki bilgilerden hangisi doğrudur?", 
+        a: [
+            "Gebelikte görülen kaşıntı ve transaminaz yüksekliği intrahepatik kolestaz bulgusudur", 
+            "Traube kapalılığı pylor obstruksiyonu göstergesidir", 
+            "Klepotaj portalhipertansiyon bulgusudur", 
+            "Karın ağrısı ve ateş olmadan sirotik hastada peritonit tanısı konulamaz", 
+            "SAAG<1.1 g/dL olaması %97 spesifite ve sensitivite ile sirotik asit lehine yorumlanır"
+        ] 
+    },
+    { 
+        q: "Aşağıdaki bilgilerden hangisi doğrudur?", 
+        a: [
+            "Melanalı bir hastaya ilk 12-24 saatte endoskopi yapılmalıdır", 
+            "Üst gastrointestinal kanamalarda temel medikal tedavi H2 reseptör blokerleri ile yapılmalıdır", 
+            "En sık alt gastrointestinal kanama nedeni ülseratif kolit kanamalarıdır", 
+            "Varis kanamalarında ilk seçilecek ilaç proton pompa inhibitörleridir", 
+            "Her alt gastrointestinal kanamalı hastaya nazogastrik irrigasyon yapılmalıdır"
+        ] 
+    },
+    { 
+        q: "Aşağıdaki durumlardan hangisinde \"ince bağırsakta bakteriyel aşırı çoğalma\" gelişmesi en az olasıdır?", 
+        a: ["Çölyak hastalığı", "İntestinal staz", "Aklorhidri", "Kronik pankreatit", "İmmün yetmezlik"] 
+    },
+    { 
+        q: "ACG (American College of Gastroenterology) kılavuzuna göre, aşağıdakilerden hangisi ilaca bağlı karaciğer hasarı gelişimi için risk faktörü değildir?", 
+        a: ["Aktif malignite", "Aktif inflamatuvar hastalık", "Obezite", "Malnutrisyon", "Gebelik"] 
+    },
+    { 
+        q: "Gastroözofageal reflü hastalığı (GÖRH) tanısında kullanılan \"24 saatlik pH monitörizasyonu\" ilgili aşağıdaki ifadelerden hangisi doğrudur?", 
+        a: [
+            "GÖRH nedeniyle operasyon planlanan tüm olgularda yapılmalıdır.", 
+            "Ekstraözofageal semptomlar ile başvuran olgularda genellikle gerekli değildir.", 
+            "GÖRH tanısında altın standart tanı yöntemdir.", 
+            "Erozif özofajitli olguların tamamına yakınında (>%90) elde edilen bulgular patolojiktir.", 
+            "Monitörizasyon boyunca mide ilaçlarının zamanında kullanılması konusunda hastalar uyarılmalıdır."
+        ] 
+    },
+    { 
+        q: "Aşağıdakilerden hangisi Poliarteritis nodozalı hastalar için doğru değildir?", 
+        a: [
+            "Hastalarda pulmoner kapillaritis alveolar hemorajiye neden olabilir.", 
+            "Hastalarda renal arter tutulumuna bağlı hipertansiyon görülebilir.", 
+            "Hastalarda karın ağrısı/intestinal anjina ile seyreden mezenterik vaskülit tablosu gözlenebilmektedir.", 
+            "Hastaların yaklaşık %30’unda hepatit B veya C enfeksiyonu görülür.", 
+            "Hastalarda periferik nöropati, sıklıkla mononöritis multipleks görülmektedir."
+        ] 
+    },
+    { 
+        q: "Generalize tetanozun klinik seyrinde gelişen semptom ve bulgular için aşağıda ifade edilenlerden hangisi yanlıştır?", 
+        a: [
+            "Değişik düzede mental durum değişikliği gelişebilir.", 
+            "Katılık veya paraliziler gelişebilir.", 
+            "Yüksek ateş ölçülebilir.", 
+            "Kardiyak ritim değişiklikleri saptanabilir.", 
+            "Klinikte izlenmekte olan hastada değişik nedenlerle organ yetmezlikleri gelişebilir."
+        ] 
+    },
+    { 
+        q: "Merkezi sinir sistemi enfeksiyonlarının toplam yönetimi sürecinde, aşağıdakilerden hangisi toplam yönetim basamakları için önerilenlere uygun değildir?", 
+        a: [
+            "Hospitalizsyon değerlendirmesi ile uygun olan hastaların hospitalize edilmesi", 
+            "Hasta anamnezi ile klinik tanı oluşturulması", 
+            "İzolasyon değerlendirmesi ile uygun hastaların izole edilmesi", 
+            "BOS örneğinin etiyolojik tanı yönünden değerlendirilmesi", 
+            "Spesifik tedavi, konak desteği ve semptomatik tedavi bileşenleri ile tedavi basamağının oluşturulması"
+        ] 
+    },
+    { 
+        q: "Tetanoz ile ilgili olarak aşağıda yapılan tanımlardan hangisi yanlıştır?", 
+        a: [
+            "Kriptojenik tetanoz; C. tetani’nin neden olduğu, kas guruplarının kasılması ile karakterize, etkenin gösterilemedeği MSS’nin toksienfeksiyoz hastalığıdır.", 
+            "Generalize tetanoz; C. tetani’nin neden olduğu kas guruplarının kasılması ile karakterize MSS’nin toksienfeksiyoz hastalığıdır.", 
+            "Lokal yara yeri tetanozu; C. tetani’nin neden olduğu, yara çevresindeki kas guruplarının kasılması ile karakterize MSS’nin toksienfeksiyoz hastalığıdır.", 
+            "Sefalik tetanoz; C. tetani’nin neden olduğu, kafa çiftlerinin paralizisi ile karakterize MSS’nin toksienfeksiyoz hastalığıdır.", 
+            "Neonatal tetanoz; yenidoğanlarda göbek kordonunun asepsi ve antisepsi kurallarına uygun olamayan kesimi sonucu, yaklaşık bir hafta sonra gelişen generalize kasılmalarla karakterize MSS’nin toksienfeksiyoz hastalığıdır."
+        ] 
+    },
+    { 
+        q: "Lomber ponksiyon en sık hangi aralıktan yapılır?", 
+        a: ["L3/4", "L2/3", "L1/2 aralığı", "L4/5", "L5/S1"] 
+    },
+    { 
+        q: "Kuduz bir hayvan tarafından ısırılan bir kişide virüs ilk olarak aşağıdaki yollardan hangisi ile beyne taşınır?", 
+        a: ["Periferik sinir sistemi", "Lenfatik sistem", "Kardiyo vasküler sistem", "Spinal kord", "Deriden komşuluk yoluyla"] 
+    },
+    { 
+        q: "NEWS ve MEWS skoru arasında değerlendirmede hangisi farklıdır?<br>I. SPO2 Skala 1(%)<br>II. Oksijen/Oda Havası<br>III. Sistolik Arter Basıncı (mmHg)<br>IV. Kalp Hızı (atım/dakika)<br>V. Bilinç<br>VI. SPO2 Skala 2(%)<br>Vücut Isısı °C", 
+        a: ["I, II, VI", "I, II, III, IV", "I, III, IV", "I, II, V, VI", "I, III, V"] 
+    },
+    { 
+        q: "Aşağıdaki etken izolasyon yöntemi eşleştirmelerinden hangisi/hangileri doğrudur?<br>I. MRSA-Temas<br>II. MRKNS- Temas<br>III. COVID 19-- Temas<br>IV. CCHF virus _Damlacık<br>V. C. difficile- Solunum<br>VI- ESBL(+) E.coli- Damlacık<br>VII. COVID 19- Damlacık", 
+        a: ["I, III; IV, VII", "I,II,III,IV", "I, III; IV, VI", "I, III; IV, V, VII,", "!I, III; IV, VII"] 
+    },
+    { 
+        q: "Aşağıdaki hastalık/lezyon eşleştirmelerinden hangisi doğrudur?", 
+        a: [
+            "Haemophilus ducreyi- şankroid", 
+            "Trepanoma pallidum- yumuşak Şankr", 
+            "Trepanoma perteneu - Sifiliz", 
+            "Calymmatobacterium granulamatosis- Lenfogranuloma venorum", 
+            "Chlamidya trachomatis- Granuloma inguinale"
+        ] 
+    },
+    { 
+        q: "49 yaşında, erkek hasta, 3 gündür olan Ateş, halsizlik, eklem ağrısı ve karın ağrısı şikayetiyle hastaneye başvurdu. Çiftçilik, yapıyor, Rize'de yaşıyor. ara köydeki evine gidiyor. Ormana gitme öyküsü mevcut. Genel durum iyi, bilinç açık, oryante koopere. Ateş:38.5°C • Nb:118/dk • TA:120/75 mmHg • SS:18/dk. Batında yaygın hassasiyet var, defans yok, rebound yok diğer fizik muayene bulgularında patolojik özellik yok. laboratuvarda, Lökosit: 11500/ mm3 ( %65 PNL, %28 lenfosit), Nötrofil: 7500/ mm3, Hemoglobin: 13.1 g/dl, Trombosit: 53 000/mm3, TİT; Lökosit: 1, Eritrosit: 5, Protein +++. AST:121 U/L, ALT:11 U/L, Üre:112 mg/dL, Kreatin:3,5 mg/dL (GFR: 104), CRP: 11 mg/d. hastada olası tanı/ tanı tanılarınız?<br>I. Hantavirüs<br>II. Akut böbrek yetmezliği<br>III. Leptospiroz<br>IV CCHF enfeksiyonu<br>V. Sepsis<br>VI. West nil ensefalit", 
+        a: ["I, II, III, V", "III,IV,V", "I, II, V,", "I,II,III,IV", "I,II,III,IV, VI"] 
+    },
+    { 
+        q: "Aşağıdakilerden hangi serolojik test Hepatit B için Anti HBs pozitifliğini aşıyla kazanıldığını açıklar?", 
+        a: ["Anti HBc IgG negatifliği", "Anti HBc IgG pozitifliği", "Anti HBc IgM negatifliği", "Anti HBc IgM pozitifliği", "Anti HBe negatifliği"] 
+    },
+    { 
+        q: "40 yaşında kadın hasta ateş, bulantı, kusma ve sağ tarafında böğür ağrısı şikâyeti ile başvuruyor. Hastanın özgeçmişinde böbrek taşı hikayesi bulunuyor. FM’de ateş 38.7 C, KH 92/dk, tansiyonu 120/80 mmHg ve kostovertebral açı hassasiyeti mevcut. Hastanın periferik kanında lökosit sayısı 13.000/mm3 ve idrarda piyüri ile lökosit silendirlerisaptanıyor. En olası tanınız nedir?", 
+        a: ["Komplike piyelonefrit", "Komplike olmayan piyelonefrit", "Komplike sistit", "Prostatit", "Üretrit"] 
+    },
+    { 
+        q: "Antibiyotiklerle ilgili aşağıdakilerden hangisi yanlıştır?", 
+        a: [
+            "Beta laktam antibiyotiklerin Gram (-) bakterilere karşı postantibiyotik etkisi vardır.", 
+            "Böbrek fonksiyon bozukluğu olan hastalarda antibiyotik kullanırken hem ilaç konsantrasyonu hem de böbrek belirteçleri takip edilmelidir.", 
+            "Gebelikte kullanılan ilaçların teratojenik etkilerinden sakınmak için kullanılan antibiyotiğe dikkat edilmelidir.", 
+            "Etkeni bilinmeyen bir enfeksiyonun tedavisinde önce geniş spektrumlu tedavi başlanarak daha sonra tedavi spekturumunun daraltılmasına De-eskalasyon tedavisi denir.", 
+            "Enfeksiyonun yeri antibiyotiğin seçimini, dozunu ve veriliş yolunu etkiler."
+        ] 
+    },
+    { 
+        q: "65 yaşında erkek hasta tatil için gittiği Antalya tatilinden döndüğünde ateş, burun akıntısı, öksürük, baş ağrısı ve balgam şikayeti oluyor. Hasta çok klima karşısında kaldığını ve böyle durumlarda sinüslerinin hep dolduğunu söylüyor. bu semptomlar doğrultusunda sinüzit tanısı konup Hastaya b laktam veriliyor. Hasta 1 hafta sonra kliniğe geldiğinde ilaçların hiçbir işe yaramadığını, ishal olduğunu ve unutkanlığının arttığını söylüyor. Ve yapılan ileri tetkikler sonucu atipik pnömoni teşhisi konuyor.<br>Bu hikayeye göre aşağıdaki etkenlerden hangisinin bu hastalığı yapma olasılığı en yüksektir ?", 
+        a: ["L. pneumophila", "M.pneumoniae", "C.pneumoniae", "M. catarhallis", "H.influenza"] 
+    },
+    { 
+        q: "Laboratuvar sonuçları 6 aydan uzun süredir; HBs Ag pozitif, Anti HBs negatif, HBe Ag pozitif, Anti Hbe negatif, Anti HBc Ig G pozitif, ALT 125 IU/dL, HBV DNA pozitif 4,5x10*6 IU/mL. Karaciğer biyopsisinde belirgin fibrozis ve nekroinflamatuvar aktivite pozitif şeklinde olan hasta ile ilgili aşağıdaki ifadelerden hangisi doğrudur?", 
+        a: [
+            "HBe Ag pozitif Kronik Hepatit B hastası", 
+            "HBe Ag pozitif Kronik Hepatit B enfeksiyonu", 
+            "İmmun toleran fazdaki hasta", 
+            "Hepatit B aşısı olması gereken hasta", 
+            "Sadece gebelik durumunda tedavi endikasyonu olan hasta"
+        ] 
+    },
+    { 
+        q: "Elli yaşında erkek hasta iki aydır süren ateş, kilo kaybı ve ara ara olan ağrı kesdiciyle azalan karın ağrısı şikayetleriyle başvurdu. Olgunun genel inspeksiyonunda kaşektik ve soluk görünümde. Özgeçmişinde dört yıl önce viral ensefalit ve apendektomi geçirmiş. Solunum sistemi muayenesinde her iki hemitoraksta ince raller duyuldu. Diğer sistem muayeneleri normal bulundu. Laboratuvar testlerinde anemi (Hb:10 g/dL), lökositoz (WBC: 17000/L), CRP (18 mg/L) ve ESR (40) yüksekliği saptandı. Akciğer grafisinde sol üst zonda konsolidasyon , sağ üst zonda infiltrasyon izlendi. Abdomen US’de pankreas başında şüpheli kitle lezyonu izlendi.Pankreas BT’de pankreas normal boyutta, düzgün konturlu ve homojendi ve kitle içermiyordu. Hepatoduodenal ligament bölgesinde ortası nekrotik etrafında halkasal opaklaşmalar görülen yaklaşık boyutları 33 x 15 mm ölçülen bir lenf nodu saptandı. Hastaya tanı için aşağıdaki yaklaşımlardan hangileri tanıya en hızlı götürecektir?<br>1. Toraks BT çekerim<br>2. BAL yaparım<br>3. Laparotomi<br>4. LAP biyopsi yaparım<br>5. LAP histopatolojik inceleme yaparım<br>6. BAL ARB, Kültür yaparım<br>7. LAP ARB, Kültür yaparım", 
+        a: ["1,3,4,5,7", "1,2,6,", "1,2,4", "3,5", "1,2,6"] 
+    },
+    { 
+        q: "BT tetkikinde, kolonda uzun bir segmentte duvar kalınlaşması, duvarda kontrastlanma ve vaskülarite artışı varsa aşağıdakilerden hangisinin olma olasılığı en düşüktür?", 
+        a: ["Kolon Ca", "Crohn hastalığı", "Ülseratif kolit", "Psödomembranöz enterokolit", "Divertikülit"] 
+    },
+    { 
+        q: "Gadolinyum bazlı kontrast maddeler için aşağıdakilerden hangisi doğrudur?", 
+        a: [
+            "Böbrek yetmezliğinde nefrojenik sistemik fibrozise neden olabilirler.", 
+            "Karaciğer fonksiyon bozukluğunda kullanımları kontrendikedir.", 
+            "Kimyasal yapıları ile nefrojenik fibrozis gelişimi arasında ilişki yoktur.", 
+            "Doza bağlı olarak nefrojenik sistemik fibrozis gelişebilir.", 
+            "Postkontrast akut böbrek hasarına yol açabilirler"
+        ] 
+    }
+];
 
     let currentIdx = 0;
     let userAnswers = new Array(questions.length).fill(null);

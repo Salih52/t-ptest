@@ -785,10 +785,26 @@
 ];
 
     let currentIdx = 0;
-    let userAnswers = new Array(questions.length).fill(null);
     let quizFinished = false;
+    let quizData = []; // Şıkları karıştırılmış halini tutacağımız dizi
+    let userAnswers = []; 
 
     function init() {
+        // Sınav başlarken şıkları karıştır (Fisher-Yates Shuffle)
+        quizData = questions.map(q => {
+            // Index 0'ın doğru cevap olduğunu işaretle
+            let options = q.a.map((opt, index) => ({ text: opt, isCorrect: index === 0 }));
+            
+            // Şıkları rastgele yer değiştir
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            
+            return { q: q.q, options: options };
+        });
+
+        userAnswers = new Array(quizData.length).fill(null);
         renderSidebar();
         loadQuestion();
     }
@@ -804,7 +820,7 @@
     function renderSidebar() {
         const grid = document.getElementById("q-grid");
         grid.innerHTML = "";
-        questions.forEach((_, i) => {
+        quizData.forEach((_, i) => {
             const badge = document.createElement("div");
             badge.className = `q-badge ${i === currentIdx ? 'active' : ''} ${userAnswers[i] !== null ? 'answered' : ''}`;
             badge.innerText = i + 1;
@@ -816,23 +832,39 @@
     function loadQuestion() {
         if(quizFinished) return;
 
-        const q = questions[currentIdx];
-        document.getElementById("question").innerText = q.q;
+        const qData = quizData[currentIdx];
+        document.getElementById("question").innerHTML = qData.q; // <br> etiketleri varsa düzgün çalışması için innerHTML
 
-        const progressText = `Soru ${currentIdx + 1} / ${questions.length}`;
+        const progressText = `Soru ${currentIdx + 1} / ${quizData.length}`;
         document.getElementById("mobile-progress").innerText = progressText;
         document.getElementById("prev-btn").disabled = currentIdx === 0;
 
         const optionsDiv = document.getElementById("options");
         optionsDiv.innerHTML = "";
 
-        q.a.forEach((opt, index) => {
+        const hasAnswered = userAnswers[currentIdx] !== null;
+
+        qData.options.forEach((opt, index) => {
             const div = document.createElement("div");
-            div.className = `option ${userAnswers[currentIdx] === index ? 'selected' : ''}`;
-            div.innerText = `${String.fromCharCode(65 + index)}) ${opt}`;
-            div.onclick = () => selectOption(index);
+            let className = "option";
+
+            // Soru cevaplandıysa renklendirme yap
+            if (hasAnswered) {
+                if (opt.isCorrect) {
+                    className += " correct"; // Doğru cevabı her zaman yeşil yap
+                } else if (userAnswers[currentIdx] === index) {
+                    className += " wrong"; // Kullanıcının seçtiği yanlış cevabı kırmızı yap
+                }
+                div.style.cursor = "default"; // Tıklanabilir imlecini kaldır
+            } else {
+                div.onclick = () => selectOption(index);
+            }
+
+            div.className = className;
+            div.innerHTML = `<strong>${String.fromCharCode(65 + index)})</strong> ${opt.text}`;
             optionsDiv.appendChild(div);
         });
+        
         renderSidebar();
 
         if(window.innerWidth < 992) {
@@ -841,12 +873,13 @@
     }
 
     function selectOption(idx) {
+        if (userAnswers[currentIdx] !== null) return; // Zaten cevaplandıysa tıklamayı engelle
         userAnswers[currentIdx] = idx;
-        loadQuestion();
+        loadQuestion(); // Renkleri göstermek için soruyu tekrar yükle
     }
 
     function nextQuestion() {
-        if (currentIdx < questions.length - 1) {
+        if (currentIdx < quizData.length - 1) {
             currentIdx++;
             loadQuestion();
         }
@@ -878,19 +911,27 @@
         const reviewList = document.getElementById("review-list");
         reviewList.innerHTML = "";
 
-        questions.forEach((q, i) => {
-            const isCorrect = userAnswers[i] === 0; 
+        quizData.forEach((qData, i) => {
+            const selectedIdx = userAnswers[i];
+            const isCorrect = selectedIdx !== null && qData.options[selectedIdx].isCorrect; 
+            
             if(isCorrect) correctCount++;
 
             const item = document.createElement("div");
             item.className = "review-item";
             item.style.borderLeft = `4px solid ${isCorrect ? 'var(--success)' : 'var(--error)'}`;
 
-            const selectedText = userAnswers[i] !== null ? `${String.fromCharCode(65 + userAnswers[i])}) ${q.a[userAnswers[i]]}` : 'Boş Bırakıldı';
-            const correctText = `A) ${q.a[0]}`;
+            // Karıştırılmış şıklardaki asıl doğru cevabı bul
+            const correctOptIdx = qData.options.findIndex(o => o.isCorrect);
+            
+            let selectedText = "Boş Bırakıldı";
+            if(selectedIdx !== null) {
+                selectedText = `${String.fromCharCode(65 + selectedIdx)}) ${qData.options[selectedIdx].text}`;
+            }
+            const correctText = `${String.fromCharCode(65 + correctOptIdx)}) ${qData.options[correctOptIdx].text}`;
 
             item.innerHTML = `
-                <div style="font-weight: 600; margin-bottom: 0.8rem; line-height: 1.4; color: var(--text);">Soru ${i + 1}: ${q.q}</div>
+                <div style="font-weight: 600; margin-bottom: 0.8rem; line-height: 1.4; color: var(--text);">Soru ${i + 1}: ${qData.q}</div>
                 <div style="color: ${isCorrect ? 'var(--success)' : 'var(--error)'}; font-weight: ${isCorrect ? '500' : 'normal'}; margin-bottom: 0.3rem;">
                     Senin Cevabın: ${selectedText}
                 </div>
@@ -899,7 +940,7 @@
             reviewList.appendChild(item);
         });
 
-        document.getElementById("score-summary").innerText = `Skor: ${correctCount} / ${questions.length}`;
+        document.getElementById("score-summary").innerText = `Skor: ${correctCount} / ${quizData.length}`;
     }
 
     init();
